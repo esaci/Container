@@ -4,6 +4,9 @@
 
 int	main( void )
 {
-/* 	std::vector<int>::iterator;
- */	return (0);
+	ft::vector<int>::iterator test;
+	std::vector<int>::iterator vtest;
+	std::vector<int> arg(10);
+	/* std::cout << *test; */
+	return (0);
 }
