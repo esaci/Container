@@ -1,14 +1,14 @@
 NAME = container
 
-CXX = clang++
-CXX_FLAGS = -Werror -Wextra -Wall -std=c++98
+CXX = c++
+CXX_FLAGS = -Wextra -Wall -Werror -std=c++98
 
-SRC_DIR = ./
+SRCS_DIR = ./
 SRCS = main.cpp
 
-OBJ_DIR = ./objects/
+OBJS_DIR = ./objects/
 OBJ = $(SRCS:.cpp=.o)
-OBJS = $(addprefix $(OBJ_DIR), $(OBJ))
+OBJS = $(addprefix $(OBJS_DIR), $(OBJ))
 DEP = $(OBJS:.o=.d)
 
 $(NAME) : $(OBJS)
@@ -16,14 +16,14 @@ $(NAME) : $(OBJS)
 
 -include $(DEP)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.cpp
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_FLAGS) -MMD -o $@ -c $<
 
 all : $(NAME)
 
 clean :
-	rm -rf $(OBJ_DIR)
+	rm -rf $(OBJS_DIR)
 
 fclean : clean
 	rm -rf $(NAME)
