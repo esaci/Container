@@ -1,6 +1,6 @@
 NAME = container
 
-CXX = c++
+CXX = clang++
 CXX_FLAGS = -Wextra -Wall -Werror -std=c++98
 
 SRCS_DIR = ./
