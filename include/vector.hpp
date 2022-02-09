@@ -6,6 +6,7 @@
 # include <uchar.h>
 # include <cstddef>
 # include "is_class.hpp"
+# include "iterator_random.hpp"
 		#include <iostream>
 	namespace ft
 	{
@@ -20,6 +21,8 @@
 				typedef typename allocator_type::pointer pointer;
 				typedef typename allocator_type::const_pointer const_pointer;
 				typedef typename allocator_type::size_type size_type;
+				typedef std::ptrdiff_t	difference_type;
+				typedef typename ft::random_iterator<vector> iterator;
 			private:
 				typedef std::random_access_iterator_tag	rait;
 				value_type	*_table;
@@ -66,36 +69,18 @@
 				~vector( void )
 				{
 					_alloc.deallocate(_table, _n_elem);
-					/* _alloc.destroy(_table); */
 				}
-				class iterator : public std::iterator<rait, value_type>
+				vector &operator=(const vector &arg)
 				{
-					private:
-						vector *_vector;
-						size_t	_i;
-					public:
-						iterator( void ): _vector(NULL), _i(0){};
-						iterator(const iterator &arg): _vector(arg._vector), _i(arg._i){};
-						~iterator ( void ){};
-						iterator &operator=(const iterator &arg){
-							_vector = arg.vector;
-							_i = arg._i;
-							return (*this);
-						}
-						bool operator==(const iterator &arg) const{
-							if (_vector == arg._vector && _i == arg._i)
-								return (1);
-							return (0);
-						}
-						bool operator!=(const iterator &arg) const{
-							if (_vector == arg._vector && _i == arg._i)
-								return (0);
-							return (1);
-						}
-						reference operator*( void ){
-							return ((*_vector)[_i]);
-						}
-				};
+					if (_n_elem)
+						_alloc.deallocate(_table, _n_elem);
+					_n_elem = arg._n_elem;
+					_alloc = arg._alloc;
+					_table = _alloc.allocate(_n_elem);
+					for(size_t i = 0; i < _n_elem; i++)
+						_alloc.construct(_table + i, arg._table[i]);
+					return (*this);
+				}
 		value_type	&operator[](size_type const &arg) const {return (_table[arg]);}
 		/* bool operator==(const vector& arg){
 			if ()
