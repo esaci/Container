@@ -19,7 +19,7 @@
 			typedef char no[2];
 
 			template <typename T>
-			static yes &test(typename I_iterator_traits<T>::iterator_category *arg = NULL);
+			static yes &test(typename iterator_traits<T>::iterator_category *arg = NULL);
 			template <typename T>
 			static no &test(...);
 
@@ -33,7 +33,7 @@
 			typedef char no[2];
 
 			template <typename T>
-			static yes &test(typename I_iterator_traits<T>::value_type *arg = NULL);
+			static yes &test(typename iterator_traits<T>::value_type *arg = NULL);
 			template <typename T>
 			static no &test(...);
 

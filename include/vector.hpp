@@ -22,7 +22,8 @@
 				typedef typename allocator_type::const_pointer const_pointer;
 				typedef typename allocator_type::size_type size_type;
 				typedef std::ptrdiff_t	difference_type;
-				typedef typename ft::random_iterator<vector> iterator;
+				typedef typename ft::random_access_iterator<_T> iterator;
+				typedef typename ft::random_access_iterator<const _T> const_iterator;
 			private:
 				typedef std::random_access_iterator_tag	rait;
 				value_type	*_table;
