@@ -78,7 +78,7 @@ namespace ft
 				}
 				operator random_access_iterator<const _T> (void) const{
 					std::cout << "enfin" << std::endl;
-					return random_access_iterator<const _T>(_ptr);
+					return NULL;
 				}
 				/* operator int(){
 					std::cout << sizeof(_T);
