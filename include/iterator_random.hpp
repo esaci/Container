@@ -11,7 +11,7 @@
 
 namespace ft
 {
-	template <class _T>
+	template <typename _T>
 		class random_access_iterator : public ft::iterator<random_access_iterator_tag, _T>
 		{
 			private:
@@ -21,7 +21,10 @@ namespace ft
 			public:
 				~random_access_iterator ( void ){};
 				random_access_iterator( void ): _ptr(NULL){};
-				random_access_iterator(const random_access_iterator &arg): _ptr(arg._ptr){};
+				template <class _U>
+				random_access_iterator(const random_access_iterator<_U> &arg){
+					_ptr = arg.base();
+				};
 				random_access_iterator(typename _iterator::pointer const arg): _ptr(arg){};
 				typename _iterator::pointer base( void ) const
 				{
@@ -73,7 +76,15 @@ namespace ft
 				typename _iterator::reference operator[](typename _iterator::difference_type n) const{
 					return (_ptr[n]);
 				}
-
+				operator random_access_iterator<const _T> (void) const{
+					std::cout << "enfin" << std::endl;
+					return random_access_iterator<const _T>(_ptr);
+				}
+				/* operator int(){
+					std::cout << sizeof(_T);
+					std::cout << "comprend pas la";
+					return 10;
+				} */
 		};
 
 		template <class iterator>

@@ -24,10 +24,10 @@ int	main( void )
 	last = arg.end();
 	ft::vector<int> arg2(first, last);
 	ft::vector<int> arg3(arg2);
-	ft::vector<int>::iterator nul;
+	ft::vector<int>::const_iterator nul;
 	ft::vector<int>::iterator nul2;
-	if (nul == nul2 && (nul++ + 0) > (nul2-- - 0))
-		std::cout << "wow" ;
+	nul2 = nul;
+	(void)nul2;
 	for (int i = 0; i < 11; i++)
 	{
 		std::cout << arg3[i] << std::endl;

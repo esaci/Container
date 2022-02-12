@@ -6,6 +6,7 @@
 # include <uchar.h>
 # include <cstddef>
 		#include <iostream>
+#include "iterator_operators.hpp"
 	namespace ft
 	{
 		struct input_iterator_tag {};
