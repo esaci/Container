@@ -26,7 +26,7 @@ int	main( void )
 	ft::vector<int> arg3(arg2);
 	ft::vector<int>::const_iterator nul;
 	ft::vector<int>::iterator nul2;
-	if (nul != nul2)
+	if (nul - nul2 && nul <= nul2 && nul < nul2 && nul > nul2 && nul >= nul2 && nul != nul2)
 		std::cout << "wow" ;
 	for (int i = 0; i < 11; i++)
 	{

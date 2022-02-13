@@ -25,7 +25,7 @@ namespace ft
 				random_access_iterator(const random_access_iterator<_U> &arg){
 					_ptr = arg.base();
 				};
-				random_access_iterator(typename _iterator::pointer const arg): _ptr(arg){};
+				random_access_iterator(typename _iterator::pointer  const arg): _ptr(arg){};
 				typename _iterator::pointer base( void ) const
 				{
 					return (_ptr);
@@ -76,9 +76,8 @@ namespace ft
 				typename _iterator::reference operator[](typename _iterator::difference_type n) const{
 					return (_ptr[n]);
 				}
-				operator random_access_iterator<const _T> (void) const{
-					std::cout << "enfin" << std::endl;
-					return NULL;
+				operator random_access_iterator<const _T> (void){
+					return random_access_iterator<const _T>(_ptr);
 				}
 				/* operator int(){
 					std::cout << sizeof(_T);
@@ -91,9 +90,17 @@ namespace ft
 		bool	operator==(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
 			return(x.base() == y.base());
 		}
-
+		template <class iteratorL, class iteratorR>
+		bool	operator==(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
+			return(x.base() == y.base());
+		}
+		
 		template <class iterator>
 		bool	operator<(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
+			return(x.base() < y.base());
+		}
+		template <class iteratorL, class iteratorR>
+		bool	operator<(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
 			return(x.base() < y.base());
 		}
 
@@ -101,9 +108,17 @@ namespace ft
 		bool	operator!=(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
 			return(x.base() != y.base());
 		}
+		template <class iteratorL, class iteratorR>
+		bool	operator!=(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
+			return(x.base() != y.base());
+		}
 
 		template <class iterator>
 		bool	operator>(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
+			return(x.base() > y.base());
+		}
+		template <class iteratorL, class iteratorR>
+		bool	operator>(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
 			return(x.base() > y.base());
 		}
 
@@ -111,14 +126,26 @@ namespace ft
 		bool	operator>=(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
 			return(x.base() >= y.base());
 		}
+		template <class iteratorL, class iteratorR>
+		bool	operator>=(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
+			return(x.base() >= y.base());
+		}
 
 		template <class iterator>
 		bool	operator<=(const random_access_iterator<iterator> &x, const random_access_iterator<iterator>  &y){
 			return(x.base() <= y.base());
 		}
+		template <class iteratorL, class iteratorR>
+		bool	operator<=(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
+			return(x.base() <= y.base());
+		}
 
 		template <class iterator>
 		typename random_access_iterator<iterator>::difference_type 	operator-(const random_access_iterator<iterator>  &x, const random_access_iterator<iterator>  &y){
+			return(x.base() - y.base());
+		}
+		template <class iteratorL, class iteratorR>
+		bool	operator-(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
 			return(x.base() - y.base());
 		}
 
