@@ -276,6 +276,53 @@
 					_n_elem -= len;
 					return (first);
 				}
+				iterator insert (iterator position, const value_type& val){
+					typename iterator::difference_type pos = position - begin(), start = size();
+					reserve(_n_elem + 1);
+					++_n_elem;
+					if (pos == start)
+					{
+						_alloc.construct(&at(start), val);
+						return (iterator(&at(pos)));
+					}
+					_alloc.construct(&at(start), at(start - 1));
+					--start;
+					for(reverse_iterator it = ++rbegin(), endt = (rend() - pos - 1); it < endt; it++)
+					{
+						_alloc.destroy(&at(start));
+						_alloc.construct(&at(start), at(start - 1));
+						--start;
+					}
+					_alloc.destroy(&at(start));
+					_alloc.construct(&at(start), val);
+					return (iterator(&at(start)));
+				}
+				void insert (iterator position, size_type n, const value_type& val){
+					size_type pos = position - begin(), start = size();
+					reserve(_n_elem + n);
+					_n_elem += n;
+					for(size_t i = 0; i < (n - (start - pos)); i++)
+						_alloc.construct(&at(start + i), val);
+					for(size_t i = n - (start - pos); i < n; i++)
+						_alloc.construct(&at(start + i), at(start - 1 - (n - i)));
+					if (start - pos <= n)
+						return ; 
+					for(reverse_iterator it = rbegin() + n, endt = (rend() - pos - n); it < endt; it++)
+					{
+						_alloc.destroy(&at(start));
+						_alloc.construct(&at(start), at(start - n));
+						--start;
+					}
+					for (size_type i = 0; i < n; i++)
+					{
+						_alloc.destroy(&at(start));
+						_alloc.construct(&at(start), val);
+						--start;
+					}
+					return ;
+				}
+				/* template <class InputIterator>
+				void insert (iterator position, InputIterator first, InputIterator last); */
 		/* bool operator==(const vector& arg){
 			if ()
 		}
