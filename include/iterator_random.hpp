@@ -79,11 +79,6 @@ namespace ft
 				operator random_access_iterator<const _T> (void){
 					return random_access_iterator<const _T>(_ptr);
 				}
-				/* operator int(){
-					std::cout << sizeof(_T);
-					std::cout << "comprend pas la";
-					return 10;
-				} */
 		};
 
 		template <class iterator>
