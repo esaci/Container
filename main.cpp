@@ -7,6 +7,8 @@
 #include <algorithm>
 #include "unistd.h"
 #include "stdlib.h"
+#include <string>
+
 int	function_test(ft::vector<int>::const_iterator arg)
 {
 	if (*arg)
@@ -15,36 +17,48 @@ int	function_test(ft::vector<int>::const_iterator arg)
 }
 
 class class_test{
-	static value = 0;
 	public:
-		char *c;
-		class_test( void ){
-			c = new char[10];
-			c[0] = 'E';
-			c[1] = 'L';
-			c[2] = '0' + value;
+		static int value;
+		int curr;
+		std::string *c;
+		class_test( void ): curr(value){
+			curr = value;
+			/* char tmp = '0' + curr; */
+			c = new std::string("EL");
 			++value;
-			std::cout << "construction de class_test numero " << value << " !" << std::endl;
+			std::cout << "construction de class_test numero " << curr << " !" << std::endl;
+		}
+		class_test( class_test const &arg):curr(arg.curr), c(new std::string(*(arg.c))){
+			++value;
+			std::cout << "construction par copie de class_test numero " << curr << " !" << std::endl;
 		}
 		~class_test( void ){
-			std::cout << "destruction de class_test numero " << value << " !" << std::endl;
-			delete [] c;
+			std::cout << "destruction de class_test numero " << curr << " !" << std::endl;
+			delete c;
 		}
-}
+		class_test &operator=(class_test const &arg){
+			delete c;
+			c = new std::string(*(arg.c));
+			curr = arg.curr;
+			std::cout << "copie de class_test numero " << curr << " !" << std::endl;
+			return (*this);
+		}
+};
+
+int class_test::value = 0;
 
 std::ostream   &operator<<(std::ostream &o, class_test const &arg)
 {
-	o << "class_test numero " << c[2] << " a ecrit ! ";
+	o << "class_test numero " << arg.curr << " a ecrit ! ";
 	return (o);
 }
 
 int	main( void )
 {
-	class_test c_test;
+	class_test c_test1;
 	class_test c_test2;
 	class_test c_test3;
 	class_test c_test4;
-	class_test	c_test_table[] = {c_test, c_test2, c_test3, c_test4};
 	/* {
 		ft::vector<int> test(10,100);
 		std::cout << test.size() << " || "<< test.capacity() << std::endl;
@@ -62,20 +76,44 @@ int	main( void )
 		std::cout << " _________________________________ "<< std::endl;
 	} */
 	{
-		std::vector<class_test> test(c_test_table[0], c_test_table[3]);
-		std::cout << test.size() << " || "<< test.capacity() << std::endl;
-		test.resize(15, 42);
-		std::cout << test.size() << " || "<< test.capacity() << std::endl;
-		std::vector<class_test>::iterator it = test.begin();
-		test.erase(test.begin() + 1, test.begin() + 3);
-		test.insert(test.begin(), c_test2);
-		for( size_t i = 0; i < 3; i++)
+		std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+		ft::vector<class_test> test;
+		test.push_back(c_test1);
+		test.push_back(c_test2);
+		std::cout << "_______________________" << std::endl;
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		/* test.resize(15, c_test3); */
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		test.insert(test.begin(), c_test3);
+		std::cout << "_______________________" << std::endl;
+		/* std::vector<class_test>::iterator it = test.begin();
+		for( size_t i = 0; i < 2; i++)
 		{
 			std::cout << *it << "||" << test.at(i) << std::endl;
 			it++;
-		}
-		std::cout << test.size() << " || "<< test.capacity() << std::endl;
-		std::cout << " _________________________________ "<< std::endl;
+		} */
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+	}
+	{
+		std::cout << "=================================================" << std::endl;
+		std::vector<class_test> test;
+		test.push_back(c_test1);
+		test.push_back(c_test2);
+		std::cout << "_______________________" << std::endl;
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		/* test.resize(15, c_test3); */
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		test.insert(test.begin(), c_test3);
+		std::cout << "_______________________" << std::endl;
+		/* std::vector<class_test>::iterator it = test.begin();
+		for( size_t i = 0; i < 2; i++)
+		{
+			std::cout << *it << "||" << test.at(i) << std::endl;
+			it++;
+		} */
+		/* std::cout << test.size() << " || "<< test.capacity() << std::endl; */
+		std::cout << "=================================================" << std::endl;
 		return (0);
 	}
 	{

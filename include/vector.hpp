@@ -34,6 +34,16 @@
 				allocator_type	_alloc;
 				size_type _capacity;
 				size_type _n_elem;
+			private:
+				value_type	*garb_collector(size_type new_length){
+					if (new_length > _capacity)
+					{
+						value_type	*garb = _table;
+						_table = NULL;
+						return (garb);
+					}
+					return (NULL);
+				}
 			public:
 				explicit vector(const allocator_type &alloc = allocator_type())
 				{
@@ -202,12 +212,15 @@
 						value_type *tmp = _table;
 						size_t oldcap = _capacity;
 						_capacity = n;
+						if (n <= (2 * _n_elem))
+							_capacity = 2 * _n_elem;
 						_table = _alloc.allocate(_capacity);
-						for (size_t i = 0; i < _n_elem; i++)
+						for (size_t i = 0; i < _n_elem && tmp; i++)
 							_alloc.construct(_table + i, tmp[i]);
-						for(size_t i = 0; i < _n_elem; i++)
+						for(size_t i = 0; i < _n_elem && tmp; i++)
 							_alloc.destroy(tmp + i);
-						_alloc.deallocate(tmp, oldcap);
+						if (tmp)
+							_alloc.deallocate(tmp, oldcap);
 					}
 				}
 
@@ -234,6 +247,36 @@
 				}
 				const_reference back( void ) const{
 					return  (_table[_n_elem]);
+				}
+
+				template <class InputIterator>
+				void assign (InputIterator first, InputIterator last){
+					for(size_t i = 0; i < _n_elem; i++)
+						_alloc.destroy(&at(i));
+					_n_elem = 0;
+					for(InputIterator tmp = first; tmp != last; tmp++)
+						_n_elem++;
+					reserve(_n_elem);
+					size_type pos;
+					for(pos = 0; first != last; first++)
+					{
+						_alloc.construct(&(this->at[pos]), *first);
+						pos++;
+					}
+				}
+				void assign (size_type n, const value_type& val){
+					for(size_t i = 0; i < _n_elem; i++)
+						_alloc.destroy(&at(i));
+					_n_elem = n;
+					reserve(_n_elem);
+					for(size_type i = 0; i < _n_elem; i++)
+						_alloc.construct(&(this->at[i]), val);
+				}
+
+				void push_back (const value_type& val){
+					reserve(_n_elem + 1);
+					_n_elem++;
+					_alloc.construct(&at(_n_elem - 1), val);
 				}
 
 				iterator erase(iterator position){
@@ -298,8 +341,12 @@
 					return (iterator(&at(start)));
 				}
 				void insert (iterator position, size_type n, const value_type& val){
+
 					size_type pos = position - begin(), start = size();
+					value_type *_garb = garb_collector(_n_elem + n);
 					reserve(_n_elem + n);
+					if (!_garb)
+						_garb = _table;
 					_n_elem += n;
 					for(size_t i = 0; i < (n - (start - pos)); i++)
 						_alloc.construct(&at(start + i), val);
