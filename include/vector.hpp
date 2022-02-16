@@ -110,12 +110,12 @@
 				}
 				iterator end( void ){
 					if (_table)
-						return (iterator(&_table[_n_elem]));
+						return (iterator(_table + _n_elem));
 					return (iterator());
 				}
 				const iterator end( void ) const{
 					if (_table)
-						return (const_iterator(&_table[_n_elem]));
+						return (const_iterator(_table + _n_elem));
 					return (const_iterator());
 				}
 				reverse_iterator rbegin( void ){
@@ -241,9 +241,11 @@
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.destroy(&at(i));
 					_n_elem = 0;
+					size_type i = 0;
 					for(InputIterator tmp = first; tmp != last; tmp++)
-						_n_elem++;
-					reserve(_n_elem);
+						i++;
+					reserve(i);
+					_n_elem = i;
 					size_type pos;
 					for(pos = 0; first != last; first++)
 					{
@@ -272,8 +274,8 @@
 				}
 
 				iterator insert (iterator position, const value_type& val){
+					// std::cout << " version 1 ------------------------------" << std::endl;
 					typename iterator::difference_type pos = position - begin(), oldsize = size();
-					/* std::cout << " version 1 ------------------------------" << std::endl; */
 					reserve(_n_elem + 1);
 					++_n_elem;
 					if (pos == oldsize)
@@ -294,17 +296,18 @@
 					return (iterator(&at(oldsize)));
 				}
 				void insert (iterator position, size_type n, const value_type& val){
-					/* std::cout << " version 2 ------------------------------" << std::endl; */
+					// std::cout << " version 2 ------------------------------" << std::endl;
 					size_type pos = position - begin(), oldsize = size();
 
 					reserve(_n_elem + n);
 					_n_elem += n;
-					for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--)
-					/* size_type i = oldsize - 1;
-					for(iterator it = end() - n - 1; it >= position && oldsize > 0; it--) */
+					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
+					size_type i = oldsize - 1;
+					for(iterator it = (end() - 1 - n); it >= (begin() + pos) && oldsize > 0; it--)
 					{
 						_alloc.construct(&at(i +  n), at(i));
 						_alloc.destroy(&at(i));
+						i--;
 						
 					}
 					for(size_type i = 0; i < n;i++)
@@ -313,25 +316,26 @@
 
 			template <class InputIterator>
 				void insert (iterator position, InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last){
-					/* std::cout << " version 3 ------------------------------" << std::endl; */
 					size_type pos = position - begin(), oldsize = size(), n = 0;
-
+					// std::cout << " version 3 ------------------------------" << std::endl;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						++n;
 					reserve(_n_elem + n);
 					_n_elem += n;
-					for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--)
-					/* size_type i = oldsize - 1;
-					for(iterator it = end() - n - 1; it >= position && oldsize > 0; it--) */
+					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
+					size_type i = oldsize - 1;
+					for(iterator it = end() - 1 - n; it >= (begin() + pos) && oldsize > 0; it--)
 					{
 						_alloc.construct(&at(i +  n), at(i));
 						_alloc.destroy(&at(i));
+						i--;
 					}
-					for(size_type i = 0; i < n;i++)
+					// std::cout << "seconde etape de la versio 3 atteinte" << std::endl;
+					for(size_type i = 1; i <= n;i++)
 					{
-						pos--;
-						_alloc.construct(&at(pos + n), *(--last));
+						_alloc.construct(&at(pos + n - i), *(--last));
 					}
+					// std::cout << "etape finale de la versio 3 atteinte" << std::endl;
 				}
 			
 				iterator erase(iterator position){
