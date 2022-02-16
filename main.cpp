@@ -43,7 +43,7 @@ int main ()
   // "it" no longer valid, get a new one:
 /*   it = myvector.begin(); */
 
-  /* vector<int> anothervector (2,400);
+  vector<int> anothervector (2,400);
   myvector.insert (it+2,anothervector.begin(),anothervector.end());
 
   int myarray [] = { 501,502,503 };
@@ -52,7 +52,7 @@ int main ()
   cout << "myvector contains:";
   for (it=myvector.begin(); it<myvector.end(); it++)
     cout << ' ' << *it;
-  cout << '\n'; */
+  cout << '\n';
 
   return 0;
 }
