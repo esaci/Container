@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inception_main.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbaudet <hbaudet@student.42.fr>            +#+  +:+       +#+        */
+/*   By: esaci <esaci@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:07:06 by hbaudet           #+#    #+#             */
-/*   Updated: 2021/01/18 16:07:24 by hbaudet          ###   ########.fr       */
+/*   Updated: 2022/02/16 17:09:29 by esaci            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int main()
 			cout << insert_in_me.at(i).at(j) << ' ';
 		cout << '\n';
 	}
-
+	cout << "Premiere etape FIN -------------------------\n";
 	vector<vector<int> >::iterator	tmp;
 	test.assign(23, 19);
 	tmp = insert_in_me.begin() + 4;
@@ -207,7 +207,7 @@ int main()
 			cout << insert_in_me.at(i).at(j) << ' ';
 		cout << '\n';
 	}
-
+	cout << "Deuxieme etape FIN -------------------------\n";
 	vector<vector<int> >::const_iterator const_it(insert_in_me.begin());
 	cout << "Const it.front() : " << std::endl;
 	cout << (*const_it).front() << '\n';
@@ -241,7 +241,7 @@ int main()
 	for (size_t i = 0; i < insert_bis.size(); i++)
 		cout << insert_bis[i].back() << ' ';
 	cout << '\n';
-
+	cout << "Premiere etape FIN -------------------------\n";
 	insert_bis.insert(insert_bis.begin() + 5, insert_in_me.begin(), insert_in_me.end());
 	for (size_t i = 0; i < insert_bis.size(); i++)
 		cout << insert_bis[i].back() << ' ';

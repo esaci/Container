@@ -62,14 +62,14 @@ namespace ft
 				random_access_iterator operator+(typename random_access_iterator<_T>::difference_type n) const{
 					return (random_access_iterator(_ptr + n));
 				}
-				random_access_iterator &operator+=(typename _iterator::difference_type n) const{
+				random_access_iterator &operator+=(typename _iterator::difference_type n){
 					_ptr += n;
 					return (*this);
 				}
 				random_access_iterator operator-(typename _iterator::difference_type n) const{
 					return (random_access_iterator(_ptr - n));
 				}
-				random_access_iterator &operator-=(typename _iterator::difference_type n) const{
+				random_access_iterator &operator-=(typename _iterator::difference_type n){
 					_ptr -= n;
 					return (*this);
 				}

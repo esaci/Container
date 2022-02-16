@@ -34,16 +34,6 @@
 				allocator_type	_alloc;
 				size_type _capacity;
 				size_type _n_elem;
-			private:
-				value_type	*garb_collector(size_type new_length){
-					if (new_length > _capacity)
-					{
-						value_type	*garb = _table;
-						_table = NULL;
-						return (garb);
-					}
-					return (NULL);
-				}
 			public:
 				explicit vector(const allocator_type &alloc = allocator_type())
 				{
@@ -58,8 +48,6 @@
 					_n_elem = n;
 					_alloc = alloc;
 					_table = _alloc.allocate(_capacity);
-					if (!_table)
-						return ;
 					for (size_type i = 0; i < _n_elem; i++)
 						_alloc.construct(_table + i, val);
 				}
@@ -73,8 +61,6 @@
 						_capacity++;
 					_table = _alloc.allocate(_capacity);
 					_n_elem = _capacity;
-					if (!_table)
-						return ;
 					for(size_type i = 0;first != last; first++)
 					{
 						_alloc.construct(_table + i, *first);
@@ -83,12 +69,10 @@
 				}
 				vector (const vector& x)
 				{
-					_capacity = x._capacity;
+					_capacity = x._n_elem;
 					_n_elem = x._n_elem;
 					_alloc = x._alloc;
-					_table = _alloc.allocate(_capacity);
-					if (!_table)
-						return (*this);
+					_table = _alloc.allocate(_n_elem);
 					for (size_type i = 0; i < _n_elem; i++)
 						_alloc.construct(_table + i, x._table[i]);
 				}
@@ -100,14 +84,13 @@
 				}
 				vector &operator=(const vector &arg)
 				{
-					if (_capacity)
-						_alloc.deallocate(_table, _capacity);
+					clear();
 					_capacity = arg._capacity;
 					_n_elem = arg._n_elem;
 					_alloc = arg._alloc;
 					_table = _alloc.allocate(_capacity);
-					if (!_table)
-						return (*this);
+					/* if (!_table)
+						return (*this); */
 					for (size_type i = 0; i < _n_elem; i++)
 						_alloc.construct(_table + i, arg._table[i]);
 					return (*this);
@@ -166,7 +149,11 @@
 				void	resize(size_type n, value_type val = value_type())
 				{
 					if (n <= _n_elem)
+					{
+						for(size_type i = n; i < _n_elem; i++)
+							_alloc.destroy(&at(i));
 						_n_elem = n;
+					}
 					else if (n <= _capacity)
 					{
 						for(; _n_elem < n; _n_elem++)
@@ -206,7 +193,7 @@
 
 				void	reserve(size_type n){
 					if (n > max_size())
-						throw std::length_error("");
+						throw std::length_error("vector::reserve");
 					if (n > _capacity)
 					{
 						value_type *tmp = _table;
@@ -243,10 +230,10 @@
 				}
 
 				reference back( void ){
-					return  (_table[_n_elem]);
+					return  (_table[_n_elem - 1]);
 				}
 				const_reference back( void ) const{
-					return  (_table[_n_elem]);
+					return  (_table[_n_elem - 1]);
 				}
 
 				template <class InputIterator>
@@ -286,7 +273,7 @@
 
 				iterator insert (iterator position, const value_type& val){
 					typename iterator::difference_type pos = position - begin(), oldsize = size();
-
+					/* std::cout << " version 1 ------------------------------" << std::endl; */
 					reserve(_n_elem + 1);
 					++_n_elem;
 					if (pos == oldsize)
@@ -307,51 +294,41 @@
 					return (iterator(&at(oldsize)));
 				}
 				void insert (iterator position, size_type n, const value_type& val){
-					size_type pos = position - begin();
+					/* std::cout << " version 2 ------------------------------" << std::endl; */
+					size_type pos = position - begin(), oldsize = size();
+
 					reserve(_n_elem + n);
 					_n_elem += n;
-					size_type count = 0;
-					for(size_type i = _n_elem - 1; i > (pos + n); i--)
+					for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--)
 					{
-						if (count >= n)
-							_alloc.destroy(&at(i));
-						_alloc.construct(&at(i), at(i - n));
-						count++;
+						_alloc.construct(&at(i +  n), at(i));
+						_alloc.destroy(&at(i));
 					}
-					for(size_type i = pos + n; i > pos;i--)
-					{
-						if (count >= n)
-							_alloc.destroy(&at(i));
-						_alloc.construct(&at(i), val);
-						count++;
-					} 
-				}
-				template <class InputIterator>
-				void insert (iterator position, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type first, InputIterator last){
-					size_type n = 0;
-					for(InputIterator tmp = first; tmp != last; tmp++)
-						++n;
-					size_type pos = position - begin();
-					reserve(_n_elem + n);
-					_n_elem += n;
-					size_type count = 0;
-					for(size_type i = _n_elem - 1; i > (pos + n); i--)
-					{
-						if (count >= n)
-							_alloc.destroy(&at(i));
-						_alloc.construct(&at(i), at(i - n));
-						count++;
-					}
-					for(size_type i = pos + n; i > pos;i--)
-					{
-						if (count >= n)
-							_alloc.destroy(&at(i));
-						_alloc.construct(&at(i), *first);
-						first++;
-						count++;
-					} 
+					for(size_type i = 0; i < n;i++)
+						_alloc.construct(&at(pos + i), val);
 				}
 
+			template <class InputIterator>
+				void insert (iterator position, InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last){
+					/* std::cout << " version 3 ------------------------------" << std::endl; */
+					size_type pos = position - begin(), oldsize = size(), n = 0;
+
+					for(InputIterator tmp = first; tmp != last; tmp++)
+						++n;
+					reserve(_n_elem + n);
+					_n_elem += n;
+					for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--)
+					{
+						_alloc.construct(&at(i +  n), at(i));
+						_alloc.destroy(&at(i));
+					}
+					for(size_type i = 0; i < n;i++)
+					{
+						pos--;
+						_alloc.construct(&at(pos + n), *(--last));
+					}
+				}
+			
 				iterator erase(iterator position){
 					iterator it = begin();
 					size_type pos = 0;
