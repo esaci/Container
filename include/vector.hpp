@@ -34,6 +34,26 @@
 				allocator_type	_alloc;
 				size_type _capacity;
 				size_type _n_elem;
+			private:
+				void	reserve_private(size_type n){
+					if (n > max_size())
+						throw std::length_error("vector::reserve_private");
+					if (n > _capacity)
+					{
+						value_type *tmp = _table;
+						size_type oldcap = _capacity;
+						_capacity = n;
+						if (n <= (2 * _n_elem))
+							_capacity = 2 * _n_elem;
+						_table = _alloc.allocate(_capacity);
+						for (size_type i = 0; i < _n_elem && tmp; i++)
+							_alloc.construct(_table + i, tmp[i]);
+						for(size_type i = 0; i < _n_elem && tmp; i++)
+							_alloc.destroy(tmp + i);
+						if (tmp)
+							_alloc.deallocate(tmp, oldcap);
+					}
+				}
 			public:
 				explicit vector(const allocator_type &alloc = allocator_type())
 				{
@@ -85,10 +105,9 @@
 				vector &operator=(const vector &arg)
 				{
 					clear();
-					_capacity = arg._capacity;
-					_n_elem = arg._n_elem;
 					_alloc = arg._alloc;
-					_table = _alloc.allocate(_capacity);
+					reserve(arg._capacity);
+					_n_elem = arg._n_elem;
 					/* if (!_table)
 						return (*this); */
 					for (size_type i = 0; i < _n_elem; i++)
@@ -190,7 +209,6 @@
 						return (1);
 					return (0);
 				}
-
 				void	reserve(size_type n){
 					if (n > max_size())
 						throw std::length_error("vector::reserve");
@@ -199,8 +217,6 @@
 						value_type *tmp = _table;
 						size_type oldcap = _capacity;
 						_capacity = n;
-						if (n <= (2 * _n_elem))
-							_capacity = 2 * _n_elem;
 						_table = _alloc.allocate(_capacity);
 						for (size_type i = 0; i < _n_elem && tmp; i++)
 							_alloc.construct(_table + i, tmp[i]);
@@ -210,7 +226,6 @@
 							_alloc.deallocate(tmp, oldcap);
 					}
 				}
-
 				reference at (size_type n){
 					if (n >= _n_elem)
 						throw std::out_of_range("");
@@ -244,7 +259,7 @@
 					size_type i = 0;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						i++;
-					reserve(i);
+					reserve_private(i);
 					_n_elem = i;
 					size_type pos;
 					for(pos = 0; first != last; first++)
@@ -256,14 +271,14 @@
 				void assign (size_type n, const value_type& val){
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.destroy(&at(i));
-					reserve(n);
+					reserve_private(n);
 					_n_elem = n;
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.construct(&(_table[i]), val);
 				}
 
 				void push_back (const value_type& val){
-					reserve(_n_elem + 1);
+					reserve_private(_n_elem + 1);
 					_n_elem++;
 					_alloc.construct(&at(_n_elem - 1), val);
 				}
@@ -276,7 +291,7 @@
 				iterator insert (iterator position, const value_type& val){
 					// std::cout << " version 1 ------------------------------" << std::endl;
 					typename iterator::difference_type pos = position - begin(), oldsize = size();
-					reserve(_n_elem + 1);
+					reserve_private(_n_elem + 1);
 					++_n_elem;
 					if (pos == oldsize)
 					{
@@ -299,7 +314,7 @@
 					// std::cout << " version 2 ------------------------------" << std::endl;
 					size_type pos = position - begin(), oldsize = size();
 
-					reserve(_n_elem + n);
+					reserve_private(_n_elem + n);
 					_n_elem += n;
 					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
 					size_type i = oldsize - 1;
@@ -320,7 +335,7 @@
 					// std::cout << " version 3 ------------------------------" << std::endl;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						++n;
-					reserve(_n_elem + n);
+					reserve_private(_n_elem + n);
 					_n_elem += n;
 					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
 					size_type i = oldsize - 1;
@@ -400,10 +415,7 @@
 				void clear( void ){
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.destroy(_table + i);
-					_alloc.deallocate(_table, _capacity);
-					_capacity = 0;
 					_n_elem = 0;
-					_table = NULL;
 				}
 
 				allocator_type get_allocator() const{
@@ -413,7 +425,7 @@
 
 					size_type pos = position - begin(), oldsize = size();
 					value_type *_garb = garb_collector(_n_elem + n);
-					reserve(_n_elem + n);
+					reserve_private(_n_elem + n);
 					_n_elem += n;
 					for(size_type = 0; i < (n - (oldsize - pos)); i++)
 						_alloc.construct(&at(oldsize + i), val);
