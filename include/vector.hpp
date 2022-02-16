@@ -250,7 +250,7 @@
 				}
 
 				template <class InputIterator>
-				void assign (InputIterator first, InputIterator last){
+				void assign (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last){
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.destroy(&at(i));
 					_n_elem = 0;
@@ -260,17 +260,17 @@
 					size_type pos;
 					for(pos = 0; first != last; first++)
 					{
-						_alloc.construct(&(this->at[pos]), *first);
+						_alloc.construct(&(this->at(pos)), *first);
 						pos++;
 					}
 				}
 				void assign (size_type n, const value_type& val){
 					for(size_type i = 0; i < _n_elem; i++)
 						_alloc.destroy(&at(i));
+					reserve(n);
 					_n_elem = n;
-					reserve(_n_elem);
 					for(size_type i = 0; i < _n_elem; i++)
-						_alloc.construct(&(this->at[i]), val);
+						_alloc.construct(&(_table[i]), val);
 				}
 
 				void push_back (const value_type& val){
@@ -327,7 +327,7 @@
 					} 
 				}
 				template <class InputIterator>
-				void insert (iterator position, InputIterator first, InputIterator last){
+				void insert (iterator position, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type first, InputIterator last){
 					size_type n = 0;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						++n;
