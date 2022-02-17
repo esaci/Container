@@ -21,10 +21,7 @@ namespace ft
 			public:
 				~random_access_iterator ( void ){};
 				random_access_iterator( void ): _ptr(NULL){};
-				template <class _U>
-				random_access_iterator(const random_access_iterator<_U> &arg){
-					_ptr = arg.base();
-				};
+				random_access_iterator(const random_access_iterator &arg): _ptr(arg.base()){};
 				random_access_iterator(typename _iterator::pointer  const arg): _ptr(arg){};
 				typename _iterator::pointer base( void ) const
 				{
@@ -140,12 +137,12 @@ namespace ft
 			return(x.base() - y.base());
 		}
 		template <class iteratorL, class iteratorR>
-		bool	operator-(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
+		typename random_access_iterator<iteratorL>::difference_type	operator-(const random_access_iterator<iteratorL> &x, const random_access_iterator<iteratorR>  &y){
 			return(x.base() - y.base());
 		}
 
 		template <class iterator>
-		random_access_iterator<iterator> operator+(const typename ft::iterator<random_access_iterator_tag, typename iterator::value_type>::difference_type n, const random_access_iterator<iterator>  &x){
+		random_access_iterator<iterator> operator+(const typename ft::iterator<random_access_iterator_tag, typename random_access_iterator<iterator>::value_type>::difference_type n, const random_access_iterator<iterator>  &x){
 			return (random_access_iterator<iterator>(x.base() + n));
 		}
 

@@ -132,7 +132,7 @@
 						return (iterator(_table + _n_elem));
 					return (iterator());
 				}
-				const iterator end( void ) const{
+				const_iterator end( void ) const{
 					if (_table)
 						return (const_iterator(_table + _n_elem));
 					return (const_iterator());
@@ -468,14 +468,7 @@
 	}
 	template <class T, class Alloc>
 	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		if (lhs.size() != rhs.size())
-			return (1);
-		for(typename vector<T, Alloc>::size_type i = 0; i < lhs.size(); i++)
-		{
-			if (lhs.at(i) != rhs.at(i))
-				return (1);
-		}
-		return (0);
+		return (!operator==(lhs,rhs));
 	}
 	template <class T, class Alloc>
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
@@ -483,7 +476,7 @@
 
 		if (lhs.size() > rhs.size())
 			min_size = rhs.size();
-		for(typename vector<T, Alloc>::size_type i = 0; i < lhs.size(); i++)
+		for(typename vector<T, Alloc>::size_type i = 0; i < min_size; i++)
 		{
 			if (lhs.at(i) != rhs.at(i))
 				return (lhs.at(i) < rhs.at(i));
@@ -496,7 +489,7 @@
 
 		if (lhs.size() > rhs.size())
 			min_size = rhs.size();
-		for(typename vector<T, Alloc>::size_type i = 0; i < lhs.size(); i++)
+		for(typename vector<T, Alloc>::size_type i = 0; i < min_size; i++)
 		{
 			if (lhs.at(i) != rhs.at(i))
 				return (lhs.at(i) <= rhs.at(i));
