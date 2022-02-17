@@ -312,8 +312,9 @@
 				}
 				void insert (iterator position, size_type n, const value_type& val){
 					// std::cout << " version 2 ------------------------------" << std::endl;
+					if (!n)
+						return ;
 					size_type pos = position - begin(), oldsize = size();
-
 					reserve_private(_n_elem + n);
 					_n_elem += n;
 					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
@@ -347,9 +348,7 @@
 					}
 					// std::cout << "seconde etape de la versio 3 atteinte" << std::endl;
 					for(size_type i = 1; i <= n;i++)
-					{
 						_alloc.construct(&at(pos + n - i), *(--last));
-					}
 					// std::cout << "etape finale de la versio 3 atteinte" << std::endl;
 				}
 			
