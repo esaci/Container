@@ -5,7 +5,7 @@
 # include <uchar.h>
 # include <cstddef>
 # include "is_class.hpp"
-# include "reverse_iterator.hpp"
+# include "iterator_bidir.hpp"
 # include <stdexcept>
 # include "pair.hpp"
 # include "tree.hpp"
@@ -27,14 +27,14 @@
 				typedef _Alloc allocator_type;
 				typedef typename _Alloc::reference reference;
 				typedef typename _Alloc::const_reference const_reference;
-				// typedef implementation defined iterator;
-				// typedef implementation defined const_iterator;
-				// typedef implementation defined size_type;
-				// typedef implementation defined difference_type;
+				typedef typename ft::bidirectional_iterator<value_type> iterator;
+				typedef typename ft::bidirectional_iterator<const value_type> const_iterator;
+				typedef ft::reverse_iterator<iterator> reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+				typedef typename iterator_traits<iterator>::difference_type difference_type;
+				typedef typename allocator_type::size_type size_type;
 				typedef typename _Alloc::pointer pointer;
 				typedef typename _Alloc::const_pointer const_pointer;
-				// typedef ft::reverse_iterator<iterator> reverse_iterator;
-				// typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 				class value_compare: public std::binary_function<value_type,value_type,bool> {
 					friend class map;
 					protected:
