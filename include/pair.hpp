@@ -5,8 +5,8 @@
 		template <class T1, class T2> 
 		struct pair
 		{
-			typedef typename T1	first_type;
-			typedef typename T2 second_type;
+			typedef T1	first_type;
+			typedef T2 second_type;
 			first_type first;
 			second_type second;
 			pair( void ): first(T1()), second(T2()){}
@@ -19,8 +19,6 @@
 				second = pr.second;
 			}
 		};
-		template <class T1, class T2>
-		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs){}
 
 		template <class T1, class T2>
 		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
