@@ -55,9 +55,9 @@ std::ostream   &operator<<(std::ostream &o, class_test const &arg)
 
 int	main( void )
 {
-	ft::map<int, int> test;
+	ft::map<int, int> *test = new ft::map<int, int>();
 	ft::map<int, int> test2;
-	(void)test;
+	delete test;
 	(void)test2;
  	
 	return (0);

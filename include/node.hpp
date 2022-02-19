@@ -14,29 +14,54 @@ namespace ft{
 			typedef T value_type;
 		public:
 			_Alloc _alloc;
-			value_type	*_ptr;
-			node		*right;
-			node		*left;
-			node		*before;
 			Compare		_cmp;
+			value_type	*_ptr;
+			node		*before;
+			node		*left;
+			node		*right;
 		public:
-			node ( const node &arg):
-				_alloc(arg._alloc), right(arg.right), left(arg.left), before(arg.before), _cmp(arg._cmp){
-				_ptr = _alloc.construct(_ptr, *arg._ptr);
+				explicit node (_Alloc alloc = _Alloc(), const Compare &arg_compare = Compare(), node *arg = NULL, node *arg2 = NULL, node *arg3 = NULL):
+					_alloc(alloc), _cmp(arg_compare), before(arg), left(arg2), right(arg3){
+					_ptr = NULL;
+				}
+			explicit node ( const node &arg):
+				_alloc(arg._alloc), _cmp(arg._cmp), before(arg.before), left(arg.left), right(arg.right){
+				_ptr = NULL;
+				if(arg._ptr)
+				{
+					_ptr = _alloc.allocate(1);
+					_alloc.construct(_ptr, *arg._ptr);
+				}
 			}
-			node (value_type *ptr = NULL, const node &arg = NULL, const node &arg2 = NULL, const node &arg3 = NULL, _Alloc &alloc = _Alloc(), const Compare &arg_compare = Compare()):
-				_alloc(alloc), _ptr(ptr), right(arg), left(arg2), before(arg3), _cmp(arg_compare){}
+			explicit node (value_type &ptr, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare(), const node *arg = NULL, const node *arg2 = NULL, const node *arg3 = NULL):
+				_alloc(alloc), _cmp(arg_compare), before(arg), left(arg2), right(arg3){
+					_ptr = _alloc.allocate(1);
+					_alloc.construc(_ptr, ptr);
+				}
 			~node ( void ){
-				_alloc.destroy(_ptr);
+				if (_ptr)
+				{
+					_alloc.destroy(_ptr);
+					_alloc.deallocate(_ptr, 1);
+				}
 			}
 			node &operator=(node const &arg){
 				if (_ptr)
 					_alloc.destroy(_ptr);
+				else
+					_ptr = _alloc.allocate(1);
 				_alloc = arg._alloc;
 				_alloc.construct(_ptr, *(arg._ptr));
 				right = arg.right;
 				left = arg.left;
 				before = arg.before;
+			}
+			node *choose_next( void ){
+				if (left)
+					return left;
+				if (right)
+					return (right);
+				return (this);
 			}
 	};
 		template <typename node>

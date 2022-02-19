@@ -9,7 +9,6 @@
 # include <stdexcept>
 # include "pair.hpp"
 # include "tree.hpp"
-# include "node.hpp"
 		# include <iostream>
 	namespace ft
 	{
@@ -22,13 +21,14 @@
 			public:
 				typedef Key key_type;
 				typedef T mapped_type;
-				typedef pair<const Key, T> value_type;
+				typedef ft::pair<const Key, T> value_type;
+				typedef typename ft::node< value_type , Compare, _Alloc > Node;
 				typedef Compare key_compare;
 				typedef _Alloc allocator_type;
 				typedef typename _Alloc::reference reference;
 				typedef typename _Alloc::const_reference const_reference;
-				typedef typename ft::bidirectional_iterator<value_type> iterator;
-				typedef typename ft::bidirectional_iterator<const value_type> const_iterator;
+				typedef typename ft::bidirectional_iterator<Node> iterator;
+				typedef typename ft::bidirectional_iterator<const Node> const_iterator;
 				typedef ft::reverse_iterator<iterator> reverse_iterator;
 				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 				typedef typename iterator_traits<iterator>::difference_type difference_type;
@@ -46,7 +46,23 @@
 						}
 				};
 			private:
-				tree< node<value_type, Compare, _Alloc>, Compare, _Alloc>	*_tree;
+				typedef typename ft::tree<Key, T, Compare, _Alloc> Tree;
+				Tree	_tree;
+
+			public:
+				explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()): _tree(Tree(comp, alloc)){}
+				// template <class InputIterator>
+				// map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+				// map (const map& x);
+			public:
+				bool _find(Key &){
+					return(true);
+				}
+				ft::pair<iterator,bool> insert (const value_type& val){
+					bool arg2  = _find(val.first);
+					iterator arg = iterator(_tree.insert(val));
+					return(ft::pair<iterator, bool>(arg, arg2));
+				}
 		};
 	};
 
