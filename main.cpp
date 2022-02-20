@@ -55,10 +55,14 @@ std::ostream   &operator<<(std::ostream &o, class_test const &arg)
 
 int	main( void )
 {
-	ft::map<int, int> *test = new ft::map<int, int>();
-	ft::map<int, int> test2;
-	delete test;
-	(void)test2;
+	ft::map<int, int> test;
+	ft::pair<int, int> val3(100,40);
+	ft::pair<int, int> val(10,41);
+	ft::pair<int, int> val2(11,42);
+	test.insert(val);
+	test.insert(val2);
+	test.insert(val3);
+	
  	
 	return (0);
 }

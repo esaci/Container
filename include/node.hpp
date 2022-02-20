@@ -23,10 +23,10 @@ namespace ft{
 		public:
 				// LE NILL SERVANT DE DEBUT ET DE FIN
 				explicit node ( void ):
-					if(_nill)
-						return ;
 					before(NULL), left(NULL), right(NULL){
 					_ptr = NULL;
+					if(_nill)
+						return ;
 					_nill = this;
 				}
 			explicit node ( const node &arg):
@@ -38,10 +38,10 @@ namespace ft{
 					_alloc.construct(_ptr, *arg._ptr);
 				}
 			}
-			explicit node (value_type &ptr, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare(), const node *arg = _nill, const node *arg2 = _nill, const node *arg3 = _nill):
+			explicit node (const value_type &ptr, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare(), node *arg = _nill, node *arg2 = _nill, node *arg3 = _nill):
 				_alloc(alloc), _cmp(arg_compare), before(arg), left(arg2), right(arg3){
 					_ptr = _alloc.allocate(1);
-					_alloc.construc(_ptr, ptr);
+					_alloc.construct(_ptr, ptr);
 				}
 			~node ( void ){
 				if (_ptr)
