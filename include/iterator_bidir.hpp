@@ -77,42 +77,37 @@
 					_ptr = _ptr->_nill;
 					return (*this);
 				}
-				bidirectional_iterator operator--(int){
-					bidirectional_iterator res = *this;
-					
-					if (_ptr->left!= _ptr->_nill)
-					{
-						_ptr = _ptr->left;
-						return (res);
-					}
-					for(_T	*tmp = _ptr->before, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
-					{
-						if (tmp->left!= _ptr->_nill && tmp->left != oldtmp)
-						{
-							_ptr = _ptr->left;
-							return (res);
-						}
-					}
-					_ptr = _ptr->_nill;
-					return (res);
-				}
 				bidirectional_iterator &operator--( void ){
-					if (_ptr->left!= _ptr->_nill)
+					if(_ptr == _ptr->_nill)
 					{
-						_ptr = _ptr->left;
+						_ptr = _ptr->_nill->before;
 						return (*this);
 					}
-					for(_T	*tmp = _ptr->before, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
+					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->left != _ptr->_nill && tmp->left != oldtmp)
+						if (tmp->_cmp(tmp->_ptr->first, oldtmp->_ptr->first))
 						{
-							_ptr = _ptr->left;
+							_ptr = tmp;
+							return (*this);
+						}
+						if (tmp->left != tmp->_nill && tmp->left != oldtmp)
+						{
+							for(tmp = tmp->left; tmp != tmp->_nill && tmp->right != oldtmp; oldtmp = tmp, tmp = tmp->right)
+								;
+							_ptr = oldtmp;
 							return (*this);
 						}
 					}
 					_ptr = _ptr->_nill;
 					return (*this);
 				}
+				bidirectional_iterator operator--(int){
+					bidirectional_iterator res = *this;
+					
+					operator--();
+					return (res);
+				}
+
 				operator bidirectional_iterator<const _T> (void){
 					return bidirectional_iterator<const _T>(_ptr);
 				}

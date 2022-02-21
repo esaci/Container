@@ -16,7 +16,7 @@ namespace ft{
 		public:
 			_Alloc _alloc;
 			Compare		_cmp;
-			static node *_nill;
+			node 	*_nill;
 			value_type	*_ptr;
 			node		*before;
 			node		*left;
@@ -26,26 +26,25 @@ namespace ft{
 				explicit node ( void ):
 					before(NULL), left(NULL), right(NULL){
 					_ptr = NULL;
-					if(_nill)
-						return ;
 					_nill = this;
 				}
 			explicit node ( const node &arg):
 				_alloc(arg._alloc), _cmp(arg._cmp), before(arg.before), left(arg.left), right(arg.right){
 				_ptr = NULL;
+				_nill= arg._nill;
 				if(arg._ptr)
 				{
 					_ptr = _alloc.allocate(1);
 					_alloc.construct(_ptr, *arg._ptr);
 				}
 			}
-			explicit node (const value_type &ptr, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare(), node *arg = _nill, node *arg2 = _nill, node *arg3 = _nill):
-				_alloc(alloc), _cmp(arg_compare), before(arg), left(arg2), right(arg3){
+			explicit node (const value_type &ptr, node *nill, node *arg, node *arg2, node *arg3, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare()):
+				_alloc(alloc), _cmp(arg_compare), _nill(nill), before(arg), left(arg2), right(arg3){
 					_ptr = _alloc.allocate(1);
 					_alloc.construct(_ptr, ptr);
 				}
 			~node ( void ){
-				if (_ptr)
+				if (this != _nill && _ptr)
 				{
 					_alloc.destroy(_ptr);
 					_alloc.deallocate(_ptr, 1);
@@ -86,12 +85,6 @@ namespace ft{
 			}
 			
 	};
-
-		template <
-		class T,
-		class Compare ,
-		class _Alloc>
-		node<T, Compare, _Alloc> *node<T, Compare, _Alloc>::_nill = NULL;
 
 		template <typename T, typename Compare>
 		bool operator==(node<T, Compare> const &arg, node<T, Compare> const &arg2){

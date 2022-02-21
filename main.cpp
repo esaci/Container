@@ -74,9 +74,20 @@ int	main( void )
 	test.insert(val7);
 	test.insert(val8);
 
-	ft::map<int, int>::iterator it;
+	ft::map<int, int> test3(test);
+	// return (0);
+	ft::map<int, int> test2(test.begin(), test.end());
+
+	ft::map<int, int>::iterator it = test2.end();
+	for(; it != test2.begin();)
+	{
+		std::cout << (*--it).first << std::endl;
+	}
+	std::cout << "-------------------------\n";
+	// return (0);
+	it = test3.begin();
 	// std::cout << (*it).first << std::endl;
-	for(it = test.begin(); it != test.end(); ++it)
+	for(; it != test3.end(); it++)
 	{
 		std::cout << (*it).first << std::endl;
 	}

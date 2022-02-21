@@ -22,19 +22,7 @@
 				typedef Key key_type;
 				typedef T mapped_type;
 				typedef ft::pair<const Key, T> value_type;
-				typedef typename ft::node< value_type , Compare, _Alloc > Node;
 				typedef Compare key_compare;
-				typedef _Alloc allocator_type;
-				typedef typename _Alloc::reference reference;
-				typedef typename _Alloc::const_reference const_reference;
-				typedef typename ft::bidirectional_iterator<Node> iterator;
-				typedef typename ft::bidirectional_iterator<const Node> const_iterator;
-				typedef ft::reverse_iterator<iterator> reverse_iterator;
-				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-				typedef typename iterator_traits<iterator>::difference_type difference_type;
-				typedef typename allocator_type::size_type size_type;
-				typedef typename _Alloc::pointer pointer;
-				typedef typename _Alloc::const_pointer const_pointer;
 				class value_compare: public std::binary_function<value_type,value_type,bool> {
 					friend class map;
 					protected:
@@ -45,21 +33,57 @@
 						return comp(x.first, y.first);
 						}
 				};
-			private:
-				typedef typename ft::tree<Key, T, Compare, _Alloc> Tree;
-				Tree	_tree;
-
+				typedef _Alloc allocator_type;
+				typedef typename _Alloc::reference reference;
+				typedef typename _Alloc::const_reference const_reference;
+				typedef typename _Alloc::pointer pointer;
+				typedef typename _Alloc::const_pointer const_pointer;
+				private:
+					typedef typename ft::node< value_type , Compare, _Alloc > Node;
+					typedef typename ft::tree<Key, T, Compare, _Alloc> Tree;
+					Compare _comp;
+					_Alloc _alloc;
+					Tree	_tree;
+				public:
+				typedef typename ft::bidirectional_iterator<Node> iterator;
+				typedef typename ft::bidirectional_iterator<const Node> const_iterator;
+				typedef ft::reverse_iterator<iterator> reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+				typedef typename iterator_traits<iterator>::difference_type difference_type;
+				typedef typename allocator_type::size_type size_type;
+				
 			public:
-				explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()): _tree(Tree(comp, alloc)){}
-				// template <class InputIterator>
-				// map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-				// map (const map& x);
+				explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
+					_comp(comp), _alloc(alloc), _tree(Tree(_comp, _alloc)){}
+				template <class InputIterator>
+				map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
+					_comp(comp), _alloc(alloc), _tree(Tree(_comp, _alloc)){
+						for(InputIterator tmp = first; tmp != last; tmp++){
+							_tree.insert(*tmp);
+						}
+					}
+				map (const map& x):
+					_comp(x._comp), _alloc(x._alloc), _tree(Tree(_comp, _alloc)){
+						// std::cout << "On regarde a partir de mtn -------------------------------\n\n";
+						map::const_iterator it = x.begin();
+						for(; it != x.end(); ++it){
+							// std::cout << (*it).first << " EST EN TRAIN DETRE INSERT !\n" << std::endl;
+							_tree.insert((*it));
+						}
+					}
 			public:
 				iterator begin( void ){
 					return (iterator(_tree.begin()));
 				}
+				const_iterator begin( void ) const{
+					return (const_iterator(_tree.begin()));
+				}
+
 				iterator end( void ){
 					return (iterator(_tree.end()));
+				}
+				const_iterator end( void )const{
+					return(const_iterator(_tree.end()));
 				}
 				bool _find(Key const &arg) const{
 					return(_tree.find(arg));

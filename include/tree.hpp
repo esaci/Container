@@ -48,18 +48,22 @@ namespace ft{
 				}
 			public:
 				Node	*begin( void ){
-					Node *tmp, *oldtmp;
-					if (_root == _nill)
-						return (_nill);
-					for(tmp = _root, oldtmp = _root; tmp != _nill; oldtmp = tmp)
-					{
-						tmp = tmp->left;
-						if (tmp == _nill)
-							break;
-					}
-					return (oldtmp);
+					return(_nill->left);
+					// Node *tmp, *oldtmp;
+					// if (_root == _nill)
+						// return (_nill);
+					// for(tmp = _root, oldtmp = _root; tmp != _nill; oldtmp = tmp)
+					// {
+						// tmp = tmp->left;
+						// if (tmp == _nill)
+							// break;
+					// }
+					// return (oldtmp);
 				}
-				Node	*end( void ){
+				Node	*begin( void ) const {
+					return (_nill->left);
+				}
+				Node	*end( void ) const {
 					return (_nill);
 				}
 				void erase_all( void ){
@@ -97,24 +101,29 @@ namespace ft{
 					}
 					if (oldtmp == _nill && !_nill->right)
 					{
-						_root = new Node(arg, _alloc, _cmp);
+						// std::cout << "ca passe ici !!\n";
+						_root = new Node(arg,_nill, _nill, _nill, _nill, _alloc, _cmp);
 						_nill->left = _root;
 						_nill->right = _root;
+						_nill->before = _root;
 						return (_root);
 					}
 					// std::cout << arg.first << " est la premiere valeur et " << oldtmp->_ptr->first << "est la deuxieme\n"; 
 					// std::cout << "Ce qui donne " << _cmp(arg.first, oldtmp->_ptr->first) << std::endl;
 					if (_cmp(arg.first, oldtmp->_ptr->first))
 						{
-							// std::cout << "1- ca cree  bien un deuxieme node\n\n\n";
-							oldtmp->left = new Node(arg, _alloc, _cmp, oldtmp);
+							oldtmp->left = new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 							tmp = oldtmp->left;
+							if(_cmp(arg.first, _nill->left->_ptr->first))
+								_nill->left = tmp;
 						}
 					else
 						{
 							// std::cout << "2- ca cree  bien un deuxieme node\n\n\n";
-							oldtmp->right = new Node(arg, _alloc, _cmp, oldtmp);
+							oldtmp->right = new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 							tmp = oldtmp->right;
+							if(_cmp(_nill->before->_ptr->first, arg.first))
+								_nill->before = tmp;
 						}
 					return (tmp);
 				}
