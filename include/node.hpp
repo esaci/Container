@@ -3,6 +3,7 @@
 
 # include "pair.hpp"
 # include <memory>
+# include <iostream>
 
 namespace ft{
 	template <
@@ -10,7 +11,7 @@ namespace ft{
 		class Compare ,
 		class _Alloc = std::allocator<T> >
 	class	node{
-		protected:
+		public:
 			typedef T value_type;
 		public:
 			_Alloc _alloc;
@@ -61,57 +62,31 @@ namespace ft{
 				left = arg.left;
 				before = arg.before;
 			}
-			node &operator++(int){
-				node *res = *this;
-				if (right)
-					return (*right);
-				for(node &tmp = *this->before; tmp != _nill; tmp = tmp->before)
-				{
-					if (tmp->right)
-						return (*tmp->right);
-				}
-				return (*res);
+			value_type	&operator*( void ) const{
+				return (*_ptr);
 			}
-			node &operator++( void ){
-				if (right)
-					return (right);
-				for(node &tmp = *this->before; tmp != _nill; tmp = tmp->before)
-				{
-					if (tmp->right)
-						return (*tmp->right);
-				}
-				return (*_nill);
+			value_type	&operator->( void ) const{
+				return (&(operator*()));
 			}
-			node &operator--(int){
-				node *res = *this;
-				if (left)
-					return (*left);
-				for(node &tmp = *this->before; tmp != _nill; tmp = tmp->before)
-				{
-					if (tmp->left)
-						return (*tmp->left);
-				}
-				return (*res);
-			}
-			node &operator--( void ){
-				if (left)
-					return (left);
-				for(node &tmp = *this->before; tmp != _nill; tmp = tmp->before)
-				{
-					if (tmp->left)
-						return (*tmp->left);
-				}
-				return (*_nill);
-			}
+
 			node *choose_next( void ){
-				if (left)
+				if (left != _nill)
 					return left;
-				if (right)
+				if (right != _nill)
 					return (right);
 				return (this);
 			}
+			void choose_next_maj( void ){
+				if (left != _nill)
+				{
+					left = _nill;
+					return ;
+				}
+				right = _nill;
+			}
 			
 	};
+
 		template <
 		class T,
 		class Compare ,

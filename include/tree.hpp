@@ -27,15 +27,15 @@ namespace ft{
 				explicit tree(const Compare &arg_compare = Compare(), const _Alloc &arg = _Alloc() )
 					: _alloc(arg), _cmp(arg_compare){
 					_root = new Node();
-					_nill = _root;
+					_nill = _root->_nill;
 				}
-				explicit tree(const value_type &arg_root, const Compare &arg_compare = Compare(), const _Alloc &arg_alloc = _Alloc() ):
-					_alloc(arg_alloc), _cmp(arg_compare){
-					_root = new Node(); 
-					_nill = _root;
-					insert(arg_root);
-				}
-				explicit tree(const tree &){}
+				// explicit tree(const value_type &arg_root, const Compare &arg_compare = Compare(), const _Alloc &arg_alloc = _Alloc() ):
+				// 	_alloc(arg_alloc), _cmp(arg_compare){
+				// 	_root = new Node(); 
+				// 	_nill = _root;
+				// 	insert(arg_root);
+				// }
+				// explicit tree(const tree &){}
 				public:
 				~tree( void ){
 					erase_all();
@@ -47,6 +47,21 @@ namespace ft{
 					copy_all(arg._root);
 				}
 			public:
+				Node	*begin( void ){
+					Node *tmp, *oldtmp;
+					if (_root == _nill)
+						return (_nill);
+					for(tmp = _root, oldtmp = _root; tmp != _nill; oldtmp = tmp)
+					{
+						tmp = tmp->left;
+						if (tmp == _nill)
+							break;
+					}
+					return (oldtmp);
+				}
+				Node	*end( void ){
+					return (_nill);
+				}
 				void erase_all( void ){
 					for(Node *tmp = _root, *oldtmp; tmp != _nill; tmp = tmp->choose_next())
 					{
@@ -54,6 +69,7 @@ namespace ft{
 						{
 							oldtmp = tmp->before;
 							delete tmp;
+							oldtmp->choose_next_maj();
 							tmp = oldtmp;
 						}
 						if (tmp == _nill)
@@ -86,14 +102,18 @@ namespace ft{
 						_nill->right = _root;
 						return (_root);
 					}
+					// std::cout << arg.first << " est la premiere valeur et " << oldtmp->_ptr->first << "est la deuxieme\n"; 
+					// std::cout << "Ce qui donne " << _cmp(arg.first, oldtmp->_ptr->first) << std::endl;
 					if (_cmp(arg.first, oldtmp->_ptr->first))
 						{
-							oldtmp->left = new Node(arg, _alloc, _cmp);
+							// std::cout << "1- ca cree  bien un deuxieme node\n\n\n";
+							oldtmp->left = new Node(arg, _alloc, _cmp, oldtmp);
 							tmp = oldtmp->left;
 						}
 					else
 						{
-							oldtmp->right = new Node(arg, _alloc, _cmp);
+							// std::cout << "2- ca cree  bien un deuxieme node\n\n\n";
+							oldtmp->right = new Node(arg, _alloc, _cmp, oldtmp);
 							tmp = oldtmp->right;
 						}
 					return (tmp);

@@ -8,6 +8,7 @@
 #include "unistd.h"
 #include "stdlib.h"
 #include <string>
+#include <map>
 #include "./include/map.hpp"
 int	function_test(ft::vector<int>::const_iterator arg)
 {
@@ -59,10 +60,26 @@ int	main( void )
 	ft::pair<int, int> val3(100,40);
 	ft::pair<int, int> val(10,41);
 	ft::pair<int, int> val2(11,42);
-	test.insert(val);
+	ft::pair<int, int> val4(110,42);
+	ft::pair<int, int> val5(1,42);
+	ft::pair<int, int> val6(0,42);
+	ft::pair<int, int> val7(-1,42);
+	ft::pair<int, int> val8(800,42);
 	test.insert(val2);
+	test.insert(val);
 	test.insert(val3);
-	
+	test.insert(val4);
+	test.insert(val5);
+	test.insert(val6);
+	test.insert(val7);
+	test.insert(val8);
+
+	ft::map<int, int>::iterator it;
+	// std::cout << (*it).first << std::endl;
+	for(it = test.begin(); it != test.end(); ++it)
+	{
+		std::cout << (*it).first << std::endl;
+	}
  	
 	return (0);
 }

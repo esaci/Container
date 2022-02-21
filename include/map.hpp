@@ -55,6 +55,12 @@
 				// map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
 				// map (const map& x);
 			public:
+				iterator begin( void ){
+					return (iterator(_tree.begin()));
+				}
+				iterator end( void ){
+					return (iterator(_tree.end()));
+				}
 				bool _find(Key const &arg) const{
 					return(_tree.find(arg));
 				}
