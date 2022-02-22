@@ -83,6 +83,7 @@ int	main( void )
 	{
 		std::cout << (*--it).first << std::endl;
 	}
+	test3 = test;
 	std::cout << "-------------------------\n";
 	// return (0);
 	it = test3.begin();

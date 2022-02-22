@@ -64,13 +64,21 @@
 					}
 				map (const map& x):
 					_comp(x._comp), _alloc(x._alloc), _tree(Tree(_comp, _alloc)){
-						// std::cout << "On regarde a partir de mtn -------------------------------\n\n";
 						map::const_iterator it = x.begin();
 						for(; it != x.end(); ++it){
-							// std::cout << (*it).first << " EST EN TRAIN DETRE INSERT !\n" << std::endl;
 							_tree.insert((*it));
 						}
 					}
+				map &operator=(const map &x){
+					_comp = x._comp;
+					_alloc = x._alloc;
+					_tree.erase_all_exept_nill();
+					const_iterator it = x.begin();
+					for(; it != x.end(); ++it){
+						_tree.insert((*it));
+					}
+					return (*this);
+				}
 			public:
 				iterator begin( void ){
 					return (iterator(_tree.begin()));

@@ -40,12 +40,17 @@ namespace ft{
 				~tree( void ){
 					erase_all();
 				}
-				tree &operator=(const tree &arg){
-					erase_all();
-					_alloc = arg._alloc;
-					_cmp = arg._cmp;
-					copy_all(arg._root);
-				}
+				// void copy_all(Node *root){
+					
+				// }
+				private:
+					tree &operator=(const tree &arg){
+						erase_all();
+						_alloc = arg._alloc;
+						_cmp = arg._cmp;
+						// copy_all(arg._root);
+						return (*this);
+					}
 			public:
 				Node	*begin( void ){
 					return(_nill->left);
@@ -81,8 +86,22 @@ namespace ft{
 					}
 					delete _nill;
 				}
-				void copy_all(Node *root){
-					(void)root;
+				void erase_all_exept_nill( void ){
+					for(Node *tmp = _root, *oldtmp; tmp != _nill; tmp = tmp->choose_next())
+					{
+						if (tmp == tmp->choose_next())
+						{
+							oldtmp = tmp->before;
+							delete tmp;
+							oldtmp->choose_next_maj();
+							tmp = oldtmp;
+						}
+						if (tmp == _nill)
+							break;
+					}
+					delete _nill;
+					_nill = new Node();
+					_root = _nill;
 				}
 				bool	find(const Key	&) const{
 					return true;
