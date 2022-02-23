@@ -315,6 +315,33 @@ namespace ft
 				}
 				return (const_iterator(_tree._nill));
 			}
+			iterator upper_bound (const key_type& k){
+				iterator it = begin();
+				for(; it != end(); ++it)
+				{
+					if (_comp(k, (*it).first))
+						return (it);
+				}
+				return (iterator(_tree._nill));
+			}
+			const_iterator upper_bound (const key_type& k) const{
+				const_iterator it = begin();
+				for(; it != end(); ++it)
+				{
+					if(_comp(k, (*it).first))
+						return (it);
+				}
+				return (const_iterator(_tree._nill));
+			}
+			pair<const_iterator,const_iterator>	equal_range (const key_type& k) const{
+					return(pair<const_iterator,const_iterator>(lower_bound(k), upper_bound(k)));
+			}
+			pair<iterator,iterator>	equal_range (const key_type& k){
+					return(pair<iterator,iterator>(lower_bound(k), upper_bound(k)));
+			}
+			allocator_type get_allocator() const{
+				return(_alloc);
+			}
 	};
 };
 
