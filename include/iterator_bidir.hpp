@@ -32,7 +32,7 @@
 					return (*this);
 				}
 				typename _T::value_type &operator*( void ) const{
-					return (*(_ptr->_ptr));
+					return (_ptr->_ptr);
 				}
 				typename _T::value_type &operator->() const{
 					return &(operator*());
@@ -42,7 +42,7 @@
 
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_ptr->first > oldtmp->_ptr->first)
+						if (tmp->_ptr.first > oldtmp->_ptr.first)
 						{
 							_ptr = tmp;
 							return (res);
@@ -61,7 +61,7 @@
 				bidirectional_iterator &operator++( void ){
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_ptr->first > oldtmp->_ptr->first)
+						if (tmp->_ptr.first > oldtmp->_ptr.first)
 						{
 							_ptr = tmp;
 							return (*this);
@@ -85,7 +85,7 @@
 					}
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_cmp(tmp->_ptr->first, oldtmp->_ptr->first))
+						if (tmp->_cmp(tmp->_ptr.first, oldtmp->_ptr.first))
 						{
 							_ptr = tmp;
 							return (*this);
@@ -115,20 +115,20 @@
 
 		template <class iterator>
 		bool	operator==(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
-			return(x.base() == y.base());
+			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
 		template <class iteratorL, class iteratorR>
 		bool	operator==(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
-			return(x.base() == y.base());
+			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
 		
 		template <class iterator>
 		bool	operator!=(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
-			return(x.base() != y.base());
+			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
 		template <class iteratorL, class iteratorR>
 		bool	operator!=(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
-			return(x.base() != y.base());
+			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
 
 };

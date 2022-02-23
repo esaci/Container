@@ -57,6 +57,8 @@ std::ostream   &operator<<(std::ostream &o, class_test const &arg)
 int	main( void )
 {
 	ft::map<int, int> test;
+	std::cout << "la max size est de " << test.max_size() << "\n";
+	// return(0);
 	ft::pair<int, int> val3(100,40);
 	ft::pair<int, int> val(10,41);
 	ft::pair<int, int> val2(11,42);

@@ -8,61 +8,40 @@
 namespace ft{
 	template <
 		class T,
-		class Compare ,
-		class _Alloc = std::allocator<T> >
+		class Compare 
+		>
 	class	node{
 		public:
 			typedef T value_type;
 		public:
-			_Alloc _alloc;
 			Compare		_cmp;
-			node 	*_nill;
-			value_type	*_ptr;
+			node 		*_nill;
+			value_type	_ptr;
 			node		*before;
 			node		*left;
 			node		*right;
 		public:
 				// LE NILL SERVANT DE DEBUT ET DE FIN
-				explicit node ( void ):
-					before(NULL), left(NULL), right(NULL){
-					_ptr = NULL;
-					_nill = this;
+				explicit node (node *arg_nill):
+					_cmp(), _ptr(), before(NULL), left(NULL), right(NULL){
+					_nill = arg_nill;
 				}
 			explicit node ( const node &arg):
-				_alloc(arg._alloc), _cmp(arg._cmp), before(arg.before), left(arg.left), right(arg.right){
-				_ptr = NULL;
-				_nill= arg._nill;
-				if(arg._ptr)
-				{
-					_ptr = _alloc.allocate(1);
-					_alloc.construct(_ptr, *arg._ptr);
+				_cmp(arg._cmp), _nill(arg._nill), _ptr(arg._ptr), before(arg.before), left(arg.left), right(arg.right){}
+			explicit node (const value_type &ptr, node *nill, node *arg, node *arg2, node *arg3, const Compare &arg_compare):
+				_cmp(arg_compare), _nill(nill), _ptr(ptr), before(arg), left(arg2), right(arg3){
 				}
-			}
-			explicit node (const value_type &ptr, node *nill, node *arg, node *arg2, node *arg3, _Alloc alloc = _Alloc(), const Compare &arg_compare = Compare()):
-				_alloc(alloc), _cmp(arg_compare), _nill(nill), before(arg), left(arg2), right(arg3){
-					_ptr = _alloc.allocate(1);
-					_alloc.construct(_ptr, ptr);
-				}
-			~node ( void ){
-				if (this != _nill && _ptr)
-				{
-					_alloc.destroy(_ptr);
-					_alloc.deallocate(_ptr, 1);
-				}
-			}
+			~node ( void ){}
 			node &operator=(node const &arg){
-				if (_ptr)
-					_alloc.destroy(_ptr);
-				else
-					_ptr = _alloc.allocate(1);
-				_alloc = arg._alloc;
-				_alloc.construct(_ptr, *(arg._ptr));
+				_cmp = arg._cmp;
+				_ptr = arg._ptr;
 				right = arg.right;
 				left = arg.left;
 				before = arg.before;
+				_nill = arg._nill;
 			}
 			value_type	&operator*( void ) const{
-				return (*_ptr);
+				return (_ptr);
 			}
 			value_type	&operator->( void ) const{
 				return (&(operator*()));
@@ -86,59 +65,59 @@ namespace ft{
 			
 	};
 
-		template <typename T, typename Compare>
-		bool operator==(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr == arg2._ptr);
-		}
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator==(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr == arg2._ptr);
-		}
+		// template <typename T, typename Compare>
+		// bool operator==(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr == arg2._ptr);
+		// }
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator==(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr == arg2._ptr);
+		// }
 
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator!=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr != arg2._ptr);
-		}
-		template <typename T, typename Compare>
-		bool operator!=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr != arg2._ptr);
-		}
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator!=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr != arg2._ptr);
+		// }
+		// template <typename T, typename Compare>
+		// bool operator!=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr != arg2._ptr);
+		// }
 
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator<(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr < arg2._ptr);
-		}
-		template <typename T, typename Compare>
-		bool operator<(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr < arg2._ptr);
-		}
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator<(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr < arg2._ptr);
+		// }
+		// template <typename T, typename Compare>
+		// bool operator<(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr < arg2._ptr);
+		// }
 
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator<=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr <= arg2._ptr);
-		}
-		template <typename T, typename Compare>
-		bool operator<=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr <= arg2._ptr);
-		}
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator<=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr <= arg2._ptr);
+		// }
+		// template <typename T, typename Compare>
+		// bool operator<=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr <= arg2._ptr);
+		// }
 
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator>(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr > arg2._ptr);
-		}
-		template <typename T, typename Compare>
-		bool operator>(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr > arg2._ptr);
-		}
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator>(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr > arg2._ptr);
+		// }
+		// template <typename T, typename Compare>
+		// bool operator>(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr > arg2._ptr);
+		// }
 
-		template <typename T, typename Compare, typename T2, typename Compare2 >
-		bool operator>=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
-			return (arg._ptr >= arg2._ptr);
-		}
-		template <typename T, typename Compare>
-		bool operator>=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
-			return (arg._ptr >= arg2._ptr);
-		}
+		// template <typename T, typename Compare, typename T2, typename Compare2 >
+		// bool operator>=(node<T, Compare> const &arg, node<T2, Compare2> const &arg2){
+		// 	return (arg._ptr >= arg2._ptr);
+		// }
+		// template <typename T, typename Compare>
+		// bool operator>=(node<T, Compare> const &arg, node<T, Compare> const &arg2){
+		// 	return (arg._ptr >= arg2._ptr);
+		// }
 };
 
 #endif
