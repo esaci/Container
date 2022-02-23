@@ -22,12 +22,14 @@ namespace ft{
 				_Alloc _alloc;
 				Compare _cmp;
 				Node *_root;
-		
+				size_type _n_elem;
+	
 			public:
 				explicit tree(const Compare &arg_compare = Compare(), const _Alloc &arg = _Alloc() )
 					: _alloc(arg), _cmp(arg_compare){
 					_root = new Node();
 					_nill = _root->_nill;
+					_n_elem = 0;
 				}
 				// explicit tree(const value_type &arg_root, const Compare &arg_compare = Compare(), const _Alloc &arg_alloc = _Alloc() ):
 				// 	_alloc(arg_alloc), _cmp(arg_compare){
@@ -53,23 +55,21 @@ namespace ft{
 					}
 			public:
 				Node	*begin( void ){
-					return(_nill->left);
-					// Node *tmp, *oldtmp;
-					// if (_root == _nill)
-						// return (_nill);
-					// for(tmp = _root, oldtmp = _root; tmp != _nill; oldtmp = tmp)
-					// {
-						// tmp = tmp->left;
-						// if (tmp == _nill)
-							// break;
-					// }
-					// return (oldtmp);
+					if (_n_elem)
+						return(_nill->left);
+					return (_nill);
 				}
 				Node	*begin( void ) const {
-					return (_nill->left);
+					if (_n_elem)
+						return(_nill->left);
+					return (_nill);
 				}
 				Node	*end( void ) const {
 					return (_nill);
+				}
+				void erase(Node *arg){
+					delete arg;
+					_n_elem--;
 				}
 				void erase_all( void ){
 					for(Node *tmp = _root, *oldtmp; tmp != _nill; tmp = tmp->choose_next())
@@ -85,6 +85,7 @@ namespace ft{
 							break;
 					}
 					delete _nill;
+					_n_elem = 0;
 				}
 				void erase_all_exept_nill( void ){
 					for(Node *tmp = _root, *oldtmp; tmp != _nill; tmp = tmp->choose_next())
@@ -102,15 +103,15 @@ namespace ft{
 					delete _nill;
 					_nill = new Node();
 					_root = _nill;
-				}
-				bool	find(const Key	&) const{
-					return true;
+					_n_elem = 0;
 				}
 				Node	*insert(value_type const &arg){
 					Node *tmp, *oldtmp;
 					
 					for(tmp = _root, oldtmp = _root; tmp != _nill;oldtmp = tmp)
 					{
+						if (arg.first == tmp->_ptr->first)
+							return (tmp);
 						if (_cmp(arg.first, tmp->_ptr->first))
 							tmp = tmp->left;
 						else
@@ -118,17 +119,15 @@ namespace ft{
 						if (tmp == _nill)
 							break ;
 					}
+					++_n_elem;
 					if (oldtmp == _nill && !_nill->right)
 					{
-						// std::cout << "ca passe ici !!\n";
 						_root = new Node(arg,_nill, _nill, _nill, _nill, _alloc, _cmp);
 						_nill->left = _root;
 						_nill->right = _root;
 						_nill->before = _root;
 						return (_root);
 					}
-					// std::cout << arg.first << " est la premiere valeur et " << oldtmp->_ptr->first << "est la deuxieme\n"; 
-					// std::cout << "Ce qui donne " << _cmp(arg.first, oldtmp->_ptr->first) << std::endl;
 					if (_cmp(arg.first, oldtmp->_ptr->first))
 						{
 							oldtmp->left = new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
@@ -138,16 +137,13 @@ namespace ft{
 						}
 					else
 						{
-							// std::cout << "2- ca cree  bien un deuxieme node\n\n\n";
 							oldtmp->right = new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 							tmp = oldtmp->right;
 							if(_cmp(_nill->before->_ptr->first, arg.first))
 								_nill->before = tmp;
 						}
 					return (tmp);
-				}
-
-				
+				}				
 		};
 };
 

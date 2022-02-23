@@ -60,11 +60,13 @@ int	main( void )
 	ft::pair<int, int> val3(100,40);
 	ft::pair<int, int> val(10,41);
 	ft::pair<int, int> val2(11,42);
-	ft::pair<int, int> val4(110,42);
+	ft::pair<int, int> val4(110,4200);
 	ft::pair<int, int> val5(1,42);
 	ft::pair<int, int> val6(0,42);
-	ft::pair<int, int> val7(-1,42);
+	ft::pair<int, int> val7(-1,-10);
 	ft::pair<int, int> val8(800,42);
+	ft::pair<ft::map<int, int>::iterator, bool> b_test;
+	ft::pair<ft::map<int, int>::iterator, bool> b_test2;
 	test.insert(val2);
 	test.insert(val);
 	test.insert(val3);
@@ -72,10 +74,15 @@ int	main( void )
 	test.insert(val5);
 	test.insert(val6);
 	test.insert(val7);
-	test.insert(val8);
+	b_test = test.insert(val8);
+	std::cout << test.size() << " est la taille avant suprr\n";
+	test.erase(++test.begin());
+	test.erase(--test.end());
+	test.erase(110);
+	std::cout << test.size() << " est la taille apres suprr\n";
 
+	std::cout << "doit valoir 1 puis 0 jcrois " << b_test.second << " " << b_test2.second << std::endl;
 	ft::map<int, int> test3(test);
-	// return (0);
 	ft::map<int, int> test2(test.begin(), test.end());
 
 	ft::map<int, int>::iterator it = test2.end();
@@ -85,13 +92,19 @@ int	main( void )
 	}
 	test3 = test;
 	std::cout << "-------------------------\n";
-	// return (0);
 	it = test3.begin();
-	// std::cout << (*it).first << std::endl;
 	for(; it != test3.end(); it++)
 	{
 		std::cout << (*it).first << std::endl;
 	}
- 	
+	std::cout << "-------------------------\n";
+ 	std::cout << test[700] << "  " << test[-1] << "      \n";
+	std::cout << "-------------------------\n";
+	test.erase(test.begin(), test.end());
+	it = test.end();
+	for(; it != test.begin();)
+	{
+		std::cout << (*--it).first << std::endl;
+	}
 	return (0);
 }

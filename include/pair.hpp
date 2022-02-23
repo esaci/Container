@@ -11,12 +11,13 @@
 			second_type second;
 			pair( void ): first(T1()), second(T2()){}
 			template<class U, class V>
-			pair (const pair<U,V> &arg):first(arg.first), second(arg.second){}
+			pair (const pair<U,V> &arg): first(arg.first), second(arg.second){}
 			pair (const first_type &a, const second_type &b): first(a), second(b){}
 		
 			pair	&operator=(const pair &pr){
 				first = pr.first;
 				second = pr.second;
+				return (*this);
 			}
 		};
 
