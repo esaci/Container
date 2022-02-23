@@ -87,7 +87,7 @@ namespace ft{
 					delete _nill;
 					_n_elem = 0;
 				}
-				void erase_all_exept_nill( void ){
+				void erase_all_except_nill( void ){
 					for(Node *tmp = _root, *oldtmp; tmp != _nill; tmp = tmp->choose_next())
 					{
 						if (tmp == tmp->choose_next())

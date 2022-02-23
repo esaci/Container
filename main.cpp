@@ -98,13 +98,17 @@ int	main( void )
 		std::cout << (*it).first << std::endl;
 	}
 	std::cout << "-------------------------\n";
- 	std::cout << test[700] << "  " << test[-1] << "      \n";
+	std::cout << "test est de taille " << test.size() << std::endl;
+	ft::map<int, int> testconst(test);
+ 	std::cout << testconst[700] << "  " << (*(testconst.find(-1))).second << "      \n";
 	std::cout << "-------------------------\n";
+	std::cout << "test est de taille " << test.size() << std::endl;
 	test.erase(test.begin(), test.end());
-	it = test.end();
-	for(; it != test.begin();)
-	{
+	test.swap(test2);
+	test.clear();
+	std::cout << "Rien a ete ecrit car test est de taille " << test.size() << std::endl;
+	it = testconst.end();
+	for(; it != testconst.begin();)
 		std::cout << (*--it).first << std::endl;
-	}
 	return (0);
 }
