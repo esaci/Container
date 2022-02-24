@@ -14,15 +14,16 @@
 		class bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, _T>
 		{
 			private:
-				typedef typename ft::iterator<bidirectional_iterator_tag, _T> _iterator;
+				typedef typename ft::iterator<bidirectional_iterator_tag, typename _T::value_type> _iterator;
+				typedef typename ft::iterator<bidirectional_iterator_tag, _T> __iterator;
 			protected:
-				typename _iterator::pointer _ptr;
+				typename __iterator::pointer _ptr;
 			public:
 				~bidirectional_iterator ( void ){};
 				bidirectional_iterator( void ): _ptr(NULL){};
 				bidirectional_iterator(const bidirectional_iterator &arg): _ptr(arg.base()){};
-				bidirectional_iterator(typename _iterator::pointer  const arg): _ptr(arg){};
-				typename _iterator::pointer base( void ) const
+				bidirectional_iterator(typename __iterator::pointer  const arg): _ptr(arg){};
+				typename __iterator::pointer base( void ) const
 				{
 					return (_ptr);
 				}
@@ -31,10 +32,10 @@
 					_ptr = arg._ptr;
 					return (*this);
 				}
-				typename _T::value_type &operator*( void ) const{
+				typename _iterator::reference operator*( void ) const{
 					return (_ptr->_ptr);
 				}
-				typename _T::value_type &operator->() const{
+				typename _iterator::pointer operator->() const{
 					return &(operator*());
 				}
 				bidirectional_iterator operator++(int){

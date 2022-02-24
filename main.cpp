@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include <string>
 #include <map>
+#include <typeinfo>
 #include "./include/map.hpp"
 int	function_test(ft::vector<int>::const_iterator arg)
 {
@@ -57,60 +58,13 @@ std::ostream   &operator<<(std::ostream &o, class_test const &arg)
 int	main( void )
 {
 	ft::map<int, int> test;
-	std::cout << "la max size est de " << test.max_size() << "\n";
-	// return(0);
-	ft::pair<int, int> val3(100,40);
-	ft::pair<int, int> val(10,41);
-	ft::pair<int, int> val2(11,42);
-	ft::pair<int, int> val4(110,4200);
-	ft::pair<int, int> val5(1,42);
-	ft::pair<int, int> val6(0,42);
-	ft::pair<int, int> val7(-1,-10);
-	ft::pair<int, int> val8(800,42);
-	ft::pair<ft::map<int, int>::iterator, bool> b_test;
-	ft::pair<ft::map<int, int>::iterator, bool> b_test2;
-	test.insert(val2);
-	test.insert(val);
-	test.insert(val3);
-	test.insert(val4);
-	test.insert(val5);
-	test.insert(val6);
-	test.insert(val7);
-	b_test = test.insert(val8);
-	std::cout << test.size() << " est la taille avant suprr\n";
-	test.erase(++test.begin());
-	test.erase(--test.end());
-	test.erase(110);
-	std::cout << test.size() << " est la taille apres suprr\n";
-
-	std::cout << "doit valoir 1 puis 0 jcrois " << b_test.second << " " << b_test2.second << std::endl;
-	ft::map<int, int> test3(test);
-	ft::map<int, int> test2(test.begin(), test.end());
-
-	ft::map<int, int>::iterator it = test2.end();
-	for(; it != test2.begin();)
-	{
-		std::cout << (*--it).first << std::endl;
-	}
-	test3 = test;
-	std::cout << "-------------------------\n";
-	it = test3.begin();
-	for(; it != test3.end(); it++)
-	{
-		std::cout << (*it).first << std::endl;
-	}
-	std::cout << "-------------------------\n";
-	std::cout << "test est de taille " << test.size() << std::endl;
-	ft::map<int, int> testconst(test);
- 	std::cout << testconst[700] << "  " << (*(testconst.find(-1))).second << "      \n";
-	std::cout << "-------------------------\n";
-	std::cout << "test est de taille " << test.size() << std::endl;
-	test.erase(test.begin(), test.end());
-	test.swap(test2);
-	test.clear();
-	std::cout << "Rien a ete ecrit car test est de taille " << test.size() << std::endl;
-	it = testconst.end();
-	for(; it != testconst.begin();)
-		std::cout << (*--it).first << std::endl;
+	test.insert(ft::pair<int, int>(0, 10));
+	test.insert(ft::pair<int, int>(1, 11));
+	ft::map<int, int>::iterator it = test.begin();
+	std::cout << it->first;
+	// std::map<int, int> test;
+	// std::map<int, int>::value_type oui = test;
+	// if (typeid(std::map<int, int>::reference) == typeid(oui))
+		// std::cout << "c le meme type\n";
 	return (0);
 }

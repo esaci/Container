@@ -13,6 +13,10 @@ namespace ft{
 	class	node{
 		public:
 			typedef T value_type;
+			typedef typename std::allocator<value_type>::reference reference;
+			typedef typename std::allocator<value_type>::pointer pointer;
+			typedef typename std::allocator<value_type>::const_reference const_reference;
+			typedef typename std::allocator<value_type>::const_pointer const_pointer; 
 		public:
 			Compare		_cmp;
 			node 		*_nill;
@@ -40,12 +44,12 @@ namespace ft{
 				before = arg.before;
 				_nill = arg._nill;
 			}
-			value_type	&operator*( void ) const{
-				return (_ptr);
-			}
-			value_type	&operator->( void ) const{
-				return (&(operator*()));
-			}
+			// value_type	&operator*( void ) const{
+				// return (_ptr);
+			// }
+			// value_type	&operator->( void ) const{
+				// return (&(operator*()));
+			// }
 
 			node *choose_next( void ){
 				if (left != _nill)

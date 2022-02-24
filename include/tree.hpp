@@ -22,10 +22,11 @@ namespace ft{
 		class _Alloc >
 		class tree{
 			public:
-				typedef typename ft::map<Key, T, Compare, _Alloc>::allocator_type allocator_type;
-				typedef typename _Alloc::size_type size_type;
 				typedef typename ft::pair<const Key, T> value_type;
 				typedef typename ft::node< value_type , Compare> Node;
+				typedef typename _Alloc::template rebind<Node>::other allocator_type;
+				// typedef typename ft::map<Key, T, Compare, _Alloc>::allocator_type allocator_type;
+				typedef typename allocator_type::size_type size_type;
 				Node *_nill;
 				allocator_type _alloc;
 				Compare _cmp;

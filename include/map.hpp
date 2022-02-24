@@ -40,7 +40,8 @@ namespace ft
 				typedef typename ft::node< value_type , Compare> Node;
 				typedef typename ft::tree<Key, T, Compare, _Alloc> Tree;
 		public:
-			typedef typename _Alloc::template rebind<Node>::other allocator_type;
+			typedef typename _Alloc::template rebind<Node>::other _allocator_type;
+			typedef _Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
@@ -53,13 +54,13 @@ namespace ft
 			typedef typename allocator_type::size_type size_type;
 		private:
 			Compare _comp;
-			allocator_type	_alloc;
+			_allocator_type	_alloc;
 			Tree	_tree;
 		public:
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
+			explicit map (const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
 				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){}
 			template <class InputIterator>
-			map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()):
+			map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
 				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){
 					for(InputIterator tmp = first; tmp != last; tmp++){
 						_tree.insert(*tmp);
