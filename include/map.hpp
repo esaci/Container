@@ -7,6 +7,7 @@
 # include "is_class.hpp"
 # include "iterator_bidir.hpp"
 # include "const_iterator_bidir.hpp"
+# include "reverse_iterator.hpp"
 # include <stdexcept>
 # include "pair.hpp"
 # include "tree.hpp"
