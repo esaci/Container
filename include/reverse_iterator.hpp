@@ -31,6 +31,7 @@
 					return (*--tmp);
 				}
 				pointer operator->() const{
+					Iterator tmp = current;
 					return (&(operator*()));
 				}
 				reverse_iterator& operator++(){

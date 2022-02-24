@@ -109,9 +109,9 @@
 					return (res);
 				}
 
-				operator bidirectional_iterator<const _T> (void){
-					return bidirectional_iterator<const _T>(_ptr);
-				}
+				// operator bidirectional_iterator<const _T> (void){
+				// 	return bidirectional_iterator<const _T>(_ptr);
+				// }
 		};
 
 		template <class iterator>

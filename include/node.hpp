@@ -44,12 +44,18 @@ namespace ft{
 				before = arg.before;
 				_nill = arg._nill;
 			}
-			// value_type	&operator*( void ) const{
-				// return (_ptr);
+			/* value_type	&operator*( void ) const{
+				return (_ptr);
+			} */
+			// value_type	*operator->( void ) const{
+			// 	return (&_ptr);
 			// }
-			// value_type	&operator->( void ) const{
-				// return (&(operator*()));
-			// }
+			node	operator->( void ) const{
+				return *this;
+			}
+			value_type	&operator*( void ) const{
+				return (_ptr);
+			}
 
 			node *choose_next( void ){
 				if (left != _nill)
