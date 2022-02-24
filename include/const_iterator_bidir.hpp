@@ -52,7 +52,7 @@
 
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_ptr->first > oldtmp->_ptr->first)
+						if (tmp->_ptr.first > oldtmp->_ptr.first)
 						{
 							_ptr = tmp;
 							return (res);
@@ -95,7 +95,7 @@
 					}
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_cmp(tmp->_ptr->first, oldtmp->_ptr->first))
+						if (tmp->_cmp(tmp->_ptr.first, oldtmp->_ptr.first))
 						{
 							_ptr = tmp;
 							return (*this);
