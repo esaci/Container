@@ -153,12 +153,16 @@ namespace ft
 			}
 		private:
 			void	change_nill(Node *arg){
-				if (arg != _tree._nill->left)
-					return ;
 				iterator it(arg);
-				_tree._nill->left = (++it).base();
-				_tree._nill->right = _tree._nill;
-				_tree._nill->before = (it).base();
+				if (arg == _tree._nill->left)
+				{
+					_tree._nill->left = (++it).base();
+					_tree._nill->right = _tree._nill;
+				}
+				if (arg == _tree._nill->before)
+				{
+					_tree._nill->before = (--it).base();
+				}
 			}
 			bool	erase_left(Node *arg){
 				if(arg == arg->_nill)

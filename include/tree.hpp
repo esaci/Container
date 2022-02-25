@@ -39,6 +39,7 @@ namespace ft{
 					_root = _alloc.allocate(1);
 					_alloc.construct(_root, Node(_root));
 					_nill = _root->_nill;
+					_nill->_nill = _nill;
 					_n_elem = 0;
 				}
 			private:
@@ -52,11 +53,6 @@ namespace ft{
 				~tree( void ){
 					erase_all();
 				}
-			Node	*begin( void ){
-				if (_n_elem)
-					return(_nill->left);
-				return (_nill);
-			}
 			Node	*begin( void ) const {
 				if (_n_elem)
 					return(_nill->left);
@@ -123,7 +119,6 @@ namespace ft{
 				{
 					_root = _alloc.allocate(1);
 					_alloc.construct(_root, Node(arg,_nill, _nill, _nill, _nill, _cmp));
-					// _root = new Node(arg,_nill, _nill, _nill, _nill, _alloc, _cmp);
 					_nill->left = _root;
 					_nill->right = _root;
 					_nill->before = _root;
@@ -135,7 +130,7 @@ namespace ft{
 						_alloc.construct(oldtmp->left, Node(arg, _nill, oldtmp, _nill, _nill, _cmp));
 						// new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 						tmp = oldtmp->left;
-						if(_cmp(arg.first, _nill->left->_ptr.first))
+						if(_cmp(tmp->_ptr.first, _nill->left->_ptr.first))
 							_nill->left = tmp;
 					}
 				else
@@ -144,6 +139,8 @@ namespace ft{
 						_alloc.construct(oldtmp->right, Node(arg, _nill, oldtmp, _nill, _nill, _cmp));
 						// new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 						tmp = oldtmp->right;
+						if(_cmp(tmp->_ptr.first, _nill->left->_ptr.first))
+							_nill->left = tmp;
 						if(_cmp(_nill->before->_ptr.first, arg.first))
 							_nill->before = tmp;
 					}
@@ -172,7 +169,7 @@ namespace ft{
 					_nill->left = _root;
 					_nill->right = _root;
 					_nill->before = _root;
-					return (ft::pair<Node*, bool>(_root, false));
+					return (ft::pair<Node*, bool>(_root, true));
 				}
 				if (_cmp(arg.first, oldtmp->_ptr.first))
 					{
@@ -192,7 +189,7 @@ namespace ft{
 						if(_cmp(_nill->before->_ptr.first, arg.first))
 							_nill->before = tmp;
 					}
-				return (ft::pair<Node*, bool>(tmp, false));
+				return (ft::pair<Node*, bool>(tmp, true));
 			}				
 		};
 };

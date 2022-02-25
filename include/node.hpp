@@ -27,7 +27,7 @@ namespace ft{
 		public:
 				// LE NILL SERVANT DE DEBUT ET DE FIN
 				explicit node (node *arg_nill):
-					_cmp(), _ptr(), before(NULL), left(NULL), right(NULL){
+					_cmp(), before(NULL), left(NULL), right(NULL){
 					_nill = arg_nill;
 				}
 			explicit node ( const node &arg):

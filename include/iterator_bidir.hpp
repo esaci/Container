@@ -116,19 +116,43 @@
 
 		template <class iterator>
 		bool	operator==(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
+			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
+			{
+				if (x.base() == y.base())
+					return (1);
+				return (0);
+			}
 			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
 		template <class iteratorL, class iteratorR>
 		bool	operator==(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
+			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
+			{
+				if (x.base() == y.base())
+					return (1);
+				return (0);
+			}
 			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
 		
 		template <class iterator>
 		bool	operator!=(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
+			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
+			{
+				if (x.base() == y.base())
+					return (0);
+				return (1);
+			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
 		template <class iteratorL, class iteratorR>
 		bool	operator!=(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
+			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
+			{
+				if (x.base() == y.base())
+					return (0);
+				return (1);
+			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
 
