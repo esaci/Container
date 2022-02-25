@@ -11,7 +11,7 @@
 	namespace ft
 	{
 	template <typename _T>
-		class bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, _T>
+		class bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, typename _T::value_type>
 		{
 			private:
 				typedef typename ft::iterator<bidirectional_iterator_tag, typename _T::value_type> _iterator;
