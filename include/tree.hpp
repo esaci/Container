@@ -184,7 +184,6 @@ namespace ft{
 					{
 						oldtmp->right = _alloc.allocate(1);
 						_alloc.construct(oldtmp->right, Node(arg, _nill, oldtmp, _nill, _nill, _cmp));
-						// new Node(arg, _nill, oldtmp, _nill, _nill, _alloc, _cmp);
 						tmp = oldtmp->right;
 						if(_cmp(_nill->before->_ptr.first, arg.first))
 							_nill->before = tmp;

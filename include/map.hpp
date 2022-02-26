@@ -160,9 +160,7 @@ namespace ft
 					_tree._nill->right = _tree._nill;
 				}
 				if (arg == _tree._nill->before)
-				{
 					_tree._nill->before = (--it).base();
-				}
 			}
 			bool	erase_left(Node *arg){
 				if(arg == arg->_nill)
@@ -204,12 +202,14 @@ namespace ft
 					else
 						arg->before->left = new_tmp;
 				}
-				new_tmp->before = arg->before;
+				if (new_tmp != new_tmp->_nill)
+					new_tmp->before = arg->before;
 				Node *i = new_tmp->left, *oldtmp = new_tmp;
 				for(; i != new_tmp->_nill;oldtmp = i, i = i->left)
 					;
 				oldtmp->left = arg->left;
-				arg->left->before = oldtmp;
+				if (arg->left->before == arg->_nill)
+					arg->left->before = oldtmp;
 				_tree.erase(arg);
 				return (true);
 			}
