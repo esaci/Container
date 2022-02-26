@@ -171,6 +171,7 @@ namespace ft
 					return (false);
 				change_nill(arg);
 				Node *new_tmp = arg->left;
+
 				if (arg->before == arg->_nill)
 					_tree._root = new_tmp;
 				else
@@ -185,6 +186,7 @@ namespace ft
 				for(; i != _tree._nill; oldtmp = i, i = i->right)
 					;
 				oldtmp->right = arg->right;
+				arg->right->before = oldtmp;
 				_tree.erase(arg);
 				return (true);
 			}
@@ -207,6 +209,7 @@ namespace ft
 				for(; i != new_tmp->_nill;oldtmp = i, i = i->left)
 					;
 				oldtmp->left = arg->left;
+				arg->left->before = oldtmp;
 				_tree.erase(arg);
 				return (true);
 			}
@@ -224,7 +227,6 @@ namespace ft
 				bool arg  = _find(k);
 				if (arg)
 					return (0);
-				// std::cout << "CA PREND LE BON RAS\n\n";
 				erase(_tree.insert(value_type(k, T())));
 				return (1);
 			}

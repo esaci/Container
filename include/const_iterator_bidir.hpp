@@ -12,7 +12,7 @@
 	namespace ft
 	{
 	template <typename _T>
-		class const_bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, typename _T::value_type>
+		class const_bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, const typename _T::value_type>
 	{
 			private:
 				typedef typename ft::iterator<bidirectional_iterator_tag, const typename _T::value_type> _iterator;
@@ -50,31 +50,10 @@
 				const typename _iterator::pointer	operator->() const{
 					return &(operator*());
 				}
-				const_bidirectional_iterator operator++(int){
-					const_bidirectional_iterator res = *this;
-
-					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
-					{
-						if (tmp->_ptr.first > oldtmp->_ptr.first)
-						{
-							_ptr = tmp;
-							return (res);
-						}
-						if (tmp->right != tmp->_nill && tmp->right != oldtmp)
-						{
-							for(tmp = tmp->right; tmp != tmp->_nill && tmp->left != oldtmp; oldtmp = tmp, tmp = tmp->left)
-								;
-							_ptr = oldtmp;
-							return (res);
-						}
-					}
-					_ptr = _ptr->_nill;
-					return (res);
-				}
 				const_bidirectional_iterator &operator++( void ){
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_ptr.first > oldtmp->_ptr.first)
+						if (tmp->_cmp(oldtmp->_ptr.first, tmp->_ptr.first))
 						{
 							_ptr = tmp;
 							return (*this);
@@ -90,6 +69,14 @@
 					_ptr = _ptr->_nill;
 					return (*this);
 				}
+
+				const_bidirectional_iterator operator++(int){
+					const_bidirectional_iterator res = *this;
+
+					operator++();
+					return (res);
+				}
+	
 				const_bidirectional_iterator &operator--( void ){
 					if(_ptr == _ptr->_nill)
 					{
@@ -163,9 +150,7 @@
 		bool	operator!=(const const_bidirectional_iterator<iterator> &x, const const_bidirectional_iterator<iterator>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (0);
-				return (1);
+				return (x.base() != y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
@@ -173,9 +158,7 @@
 		bool	operator!=(const const_bidirectional_iterator<iteratorL> &x, const const_bidirectional_iterator<iteratorR>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (0);
-				return (1);
+				return (x.base() != y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
@@ -183,9 +166,7 @@
 		bool	operator!=(const const_bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (0);
-				return (1);
+				return (x.base() != y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}

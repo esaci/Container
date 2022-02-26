@@ -38,31 +38,10 @@
 				typename _iterator::pointer operator->() const{
 					return &(operator*());
 				}
-				bidirectional_iterator operator++(int){
-					bidirectional_iterator res = *this;
-
-					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
-					{
-						if (tmp->_ptr.first > oldtmp->_ptr.first)
-						{
-							_ptr = tmp;
-							return (res);
-						}
-						if (tmp->right != tmp->_nill && tmp->right != oldtmp)
-						{
-							for(tmp = tmp->right; tmp != tmp->_nill && tmp->left != oldtmp; oldtmp = tmp, tmp = tmp->left)
-								;
-							_ptr = oldtmp;
-							return (res);
-						}
-					}
-					_ptr = _ptr->_nill;
-					return (res);
-				}
 				bidirectional_iterator &operator++( void ){
 					for(_T	*tmp = _ptr, *oldtmp = _ptr; tmp != tmp->_nill; oldtmp = tmp, tmp = tmp->before)
 					{
-						if (tmp->_ptr.first > oldtmp->_ptr.first)
+						if (tmp->_cmp(oldtmp->_ptr.first, tmp->_ptr.first))
 						{
 							_ptr = tmp;
 							return (*this);
@@ -78,6 +57,12 @@
 					_ptr = _ptr->_nill;
 					return (*this);
 				}
+				bidirectional_iterator operator++(int){
+					bidirectional_iterator res = *this;
+					operator++();
+					return (res);
+				}
+				
 				bidirectional_iterator &operator--( void ){
 					if(_ptr == _ptr->_nill)
 					{
@@ -116,11 +101,10 @@
 
 		template <class iterator>
 		bool	operator==(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
+			return (x.base() == y.base());
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (1);
-				return (0);
+				return (x.base() == y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
@@ -128,9 +112,7 @@
 		bool	operator==(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (1);
-				return (0);
+				return (x.base() == y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) == x.base()->_cmp((*y).first, (*x).first));
 		}
@@ -139,9 +121,7 @@
 		bool	operator!=(const bidirectional_iterator<iterator> &x, const bidirectional_iterator<iterator>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (0);
-				return (1);
+				return (x.base() != y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}
@@ -149,9 +129,7 @@
 		bool	operator!=(const bidirectional_iterator<iteratorL> &x, const bidirectional_iterator<iteratorR>  &y){
 			if (x.base() == x.base()->_nill || y.base() == y.base()->_nill)
 			{
-				if (x.base() == y.base())
-					return (0);
-				return (1);
+				return (x.base() != y.base());
 			}
 			return(x.base()->_cmp((*x).first, (*y).first) != x.base()->_cmp((*y).first, (*x).first));
 		}

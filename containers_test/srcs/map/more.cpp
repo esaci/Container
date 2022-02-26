@@ -22,7 +22,10 @@ int		main(void)
 	mp[12] = "no";
 	mp[27] = "bee";
 	mp[90] = "8";
+	// int i = 0;
+	// for(TESTED_NAMESPACE::map<T1, T2, ft_more>::iterator it = mp.begin(); i < 20000 && it != mp.end(); it++, i++)
+		// std::cout << it->first << std::endl;
+	// return(0);
 	printSize(mp);
-
 	return (0);
 }
