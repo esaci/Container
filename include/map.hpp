@@ -140,15 +140,19 @@ namespace ft
 				return (true);
 			}
 			ft::pair<iterator,bool> insert (const value_type& val){
+				if (_tree._n_elem >= max_size())
+						return(ft::pair<iterator,bool>(end(),false));
 				return(_tree.insert_bool(val));
 			}
 			iterator insert (iterator position, const value_type& val){
+				if (_tree._n_elem >= max_size())
+						return(end());
 				(void)position;
 				return(iterator(_tree.insert(val)));
 			}
 			template <class InputIterator>
 			void insert (InputIterator first, InputIterator last){
-				for(; first != last; first++)
+				for(; first != last && _tree._n_elem < max_size(); first++)
 					_tree.insert(*first);
 			}
 		private:

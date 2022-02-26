@@ -290,6 +290,8 @@
 
 				iterator insert (iterator position, const value_type& val){
 					// std::cout << " version 1 ------------------------------" << std::endl;
+					if (_n_elem >= max_size())
+						return(end());
 					typename iterator::difference_type pos = position - begin(), oldsize = size();
 					reserve_private(_n_elem + 1);
 					++_n_elem;
@@ -311,7 +313,8 @@
 					return (iterator(&at(oldsize)));
 				}
 				void insert (iterator position, size_type n, const value_type& val){
-					// std::cout << " version 2 ------------------------------" << std::endl;
+					if (_n_elem >= max_size())
+						return ;
 					if (!n)
 						return ;
 					size_type pos = position - begin(), oldsize = size();
@@ -332,6 +335,8 @@
 
 			template <class InputIterator>
 				void insert (iterator position, InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last){
+					if (_n_elem >= max_size())
+						return;
 					size_type pos = position - begin(), oldsize = size(), n = 0;
 					// std::cout << " version 3 ------------------------------" << std::endl;
 					for(InputIterator tmp = first; tmp != last; tmp++)

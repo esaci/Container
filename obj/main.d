@@ -1,0 +1,32 @@
+obj/main.o: main.cpp include/map.hpp include/is_class.hpp \
+  include/iterator.hpp include/iterator_operators.hpp \
+  include/iterator_bidir.hpp include/const_iterator_bidir.hpp \
+  include/reverse_iterator.hpp include/pair.hpp include/tree.hpp \
+  include/node.hpp include/stack.hpp include/vector.hpp \
+  include/iterator_random.hpp
+
+include/map.hpp:
+
+include/is_class.hpp:
+
+include/iterator.hpp:
+
+include/iterator_operators.hpp:
+
+include/iterator_bidir.hpp:
+
+include/const_iterator_bidir.hpp:
+
+include/reverse_iterator.hpp:
+
+include/pair.hpp:
+
+include/tree.hpp:
+
+include/node.hpp:
+
+include/stack.hpp:
+
+include/vector.hpp:
+
+include/iterator_random.hpp:
