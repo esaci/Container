@@ -15,11 +15,14 @@
 		class const_bidirectional_iterator : public ft::iterator<bidirectional_iterator_tag, typename _T::value_type>
 	{
 			private:
-				typedef typename ft::iterator<bidirectional_iterator_tag, typename _T::value_type> _iterator;
+				typedef typename ft::iterator<bidirectional_iterator_tag, const typename _T::value_type> _iterator;
 				typedef typename ft::iterator<bidirectional_iterator_tag, _T> __iterator;
 			protected:
 				typename __iterator::pointer _ptr;
 			public:
+				// const typedef typename _T::value_type value_type;
+				// const typedef typename _T::reference reference;
+				// const typedef typename _T::pointer pointer;
 				~const_bidirectional_iterator ( void ){};
 				const_bidirectional_iterator( void ): _ptr(NULL){};
 				const_bidirectional_iterator(const const_bidirectional_iterator &arg): _ptr(arg.base()){};
