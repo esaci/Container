@@ -189,6 +189,7 @@ namespace ft
 					;
 				oldtmp->right = arg->right;
 				arg->right->before = oldtmp;
+				_tree.maj_height_erase(new_tmp);
 				_tree.erase(arg);
 				return (true);
 			}
@@ -214,6 +215,7 @@ namespace ft
 				oldtmp->left = arg->left;
 				if (arg->left->before == arg->_nill)
 					arg->left->before = oldtmp;
+				_tree.maj_height_erase(new_tmp);
 				_tree.erase(arg);
 				return (true);
 			}

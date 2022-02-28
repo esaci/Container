@@ -18,7 +18,7 @@ $(NAME) : $(OBJS)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXX_FLAGS) -MMD -o $@ -c $<
+	$(CXX) $(CXX_FLAGS) -MMD -o $@ -c $< -D vctr=1 -D mp=1 -D lol=ft
 
 all : $(NAME)
 

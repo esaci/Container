@@ -24,16 +24,17 @@ namespace ft{
 			node		*before;
 			node		*left;
 			node		*right;
+			size_t		h;
 		public:
 				// LE NILL SERVANT DE DEBUT ET DE FIN
 				explicit node (node *arg_nill):
-					_cmp(), before(NULL), left(NULL), right(NULL){
+					_cmp(), before(NULL), left(NULL), right(NULL), h(0){
 					_nill = arg_nill;
 				}
 			explicit node ( const node &arg):
-				_cmp(arg._cmp), _nill(arg._nill), _ptr(arg._ptr), before(arg.before), left(arg.left), right(arg.right){}
-			explicit node (const value_type &ptr, node *nill, node *arg, node *arg2, node *arg3, const Compare &arg_compare):
-				_cmp(arg_compare), _nill(nill), _ptr(ptr), before(arg), left(arg2), right(arg3){
+				_cmp(arg._cmp), _nill(arg._nill), _ptr(arg._ptr), before(arg.before), left(arg.left), right(arg.right), h(arg.h){}
+			explicit node (const value_type &ptr, node *nill, node *arg, node *arg2, node *arg3, const Compare &arg_compare, const size_t &arg_h = 0):
+				_cmp(arg_compare), _nill(nill), _ptr(ptr), before(arg), left(arg2), right(arg3), h(arg_h){
 				}
 			~node ( void ){}
 			node &operator=(node const &arg){
