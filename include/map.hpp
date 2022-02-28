@@ -129,6 +129,7 @@ namespace ft
 				iterator it = iterator(_tree.insert(value_type(k, T())));
 				return ((*it).second);
 			}
+		private:
 			bool	_find(const Key &arg) const{
 				const_iterator it = begin();
 				for(; it != end(); ++it)
@@ -138,6 +139,7 @@ namespace ft
 				}
 				return (true);
 			}
+		public:
 			ft::pair<iterator,bool> insert (const value_type& val){
 				if (_tree._n_elem >= max_size())
 						return(ft::pair<iterator,bool>(end(),false));

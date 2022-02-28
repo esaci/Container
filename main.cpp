@@ -44,7 +44,7 @@ int main( void ){
 	}
 	if(!TESTER || TESTER == 2)
 	{
-		std::cout << "TESTER 1 : Vector test reverse et const_iterator + operators\n";
+		std::cout << "TESTER 2 : Vector test reverse et const_iterator + operators\n";
 		NAMESPACE::vector<std::string> vct(1000, std::string("eh ben dis donc"));
 		NAMESPACE::vector<std::string> vct2(100, std::string("eh ben"));
 		vct2.insert(--vct2.end(), vct.begin(), vct.end());
@@ -57,20 +57,70 @@ int main( void ){
 			vct.pop_back();
 		}
 	}
-	if(!TESTER || TESTER == 2)
+	if(!TESTER || TESTER == 3)
 	{
-		std::cout << "TESTER 1 : Vector test reverse et const_iterator + operators\n";
+		std::cout << "TESTER 3 : Vector test copy\n";
 		NAMESPACE::vector<std::string> vct(1000, std::string("eh ben dis donc"));
-		NAMESPACE::vector<std::string> vct2(100, std::string("eh ben"));
-		vct2.insert(--vct2.end(), vct.begin(), vct.end());
-		vct.resize(vct2.size());
+		NAMESPACE::vector<std::string> vct2(vct);
+		
+		std::cerr << vct2.size() << " " << vct2.capacity() << " " << vct.size() << " "  << vct.capacity() << std::endl;
+		vct2.insert(vct2.begin(), 10, std::string("Bonjour"));
+		vct.insert(vct.begin(), 1000, std::string("Bonj"));
+		std::cerr << vct2.size() << " " << vct2.capacity() << " " << vct.size() << " "  << vct.capacity() << std::endl;
+		for(NAMESPACE::vector<std::string>::iterator it = vct.begin(); it != vct.end(); it++)
+			std::cerr << *it << std::endl;
+		for(NAMESPACE::vector<std::string>::iterator it = vct2.begin(); it != vct2.end(); it++)
+			std::cerr << *it << std::endl;
+	}
+	if(!TESTER || TESTER == 4)
+	{
+		std::cout << "TESTER 4 : Map Simple Insert puis erase\n";
+		NAMESPACE::map<int, int> mp;
 
-		while(!vct2.empty())
+		for (int i = 0; i < 1000000; ++i)
+			mp.insert(NAMESPACE::pair<int, int>(i, i));
+		NAMESPACE::map<int, int>::iterator it = mp.begin();
+		for(NAMESPACE::map<int, int>::iterator tmp = mp.begin(); tmp != mp.end(); tmp++)
+			std::cerr << tmp->first << " " << tmp->second << std::endl;
+		it = mp.begin();
+		while(it != mp.end())
 		{
-			comparator<NAMESPACE::vector<std::string> >(vct2.begin(), vct.begin(), --vct2.rend());
-			vct2.pop_back();
-			vct.pop_back();
+			mp.erase(it);
+			it = mp.begin();
 		}
+	}
+	if (!TESTER || TESTER == 5){
+		std::cout << "TESTER 5 : Map Tricky Erase\n";
+		NAMESPACE::map<int, std::string> mp;
+
+		for(int	i = 0; i < 1000;i++)
+			mp.insert(NAMESPACE::pair<int, std::string>(i, "EH oui"));
+		mp.erase(42);
+		mp.erase(546);
+		mp.erase(23);
+		mp.erase(44);
+		mp.erase(999);
+		mp.erase(0);
+		while(!mp.empty())
+		{
+			std::cerr << mp.begin()->first << std::endl;
+			comparator<NAMESPACE::map<int, std::string> >(mp.begin(), --mp.end(), --mp.rend());
+			mp.erase(mp.begin());
+			mp.erase(--mp.end());
+		}
+	}
+	if (!TESTER || TESTER == 6){
+		std::cout << "TESTER 6 : Map Tricky Iterator\n";
+		NAMESPACE::map<int, int> mp;
+		for (int i = 0; i < 100; ++i)
+			mp.insert(NAMESPACE::pair<int, int>(i, i));
+
+		NAMESPACE::map<int, int>::iterator it = mp.begin();
+		NAMESPACE::map<int, int>::const_iterator cit(it);
+		NAMESPACE::map<int, int>::reverse_iterator rit = mp.rbegin();
+		NAMESPACE::map<int, int>::const_reverse_iterator rcit(rit);
+
+		std::cerr << cit->first << rcit->first << "\n";
 	}
 	return (0);
 }
