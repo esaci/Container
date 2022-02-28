@@ -1,118 +1,76 @@
-#include <iostream>
-#include <string>
-#include <deque>
-// #if 1 //CREATE A REAL STL EXAMPLE
-	#include <map>
-	#include <stack>
-	#include <vector>
-	// namespace ft = std;
-
-	#include "include/map.hpp"
-	#include "include/stack.hpp"
-	#include "include/vector.hpp"
 
 #include "include/map.hpp"
 #include "include/vector.hpp"
 #include "include/stack.hpp"
+#include <string>
+#include <iostream>
 
-#include <stdlib.h>
+#include <vector>
+#include <map>
+#include <stack>
 
-#define MAX_RAM 4294967296
-#define BUFFER_SIZE 4096
-struct Buffer
+template <class T>
+void	comparator(typename T::iterator it, typename T::const_iterator const_it, typename T::reverse_iterator reverse_it)
 {
-	int idx;
-	char buff[BUFFER_SIZE];
-};
+	std::cerr << "eq: " << (*it == *const_it) << " | ne: " << (*it != *const_it) << std::endl;
+	std::cerr << "lt: " << (*it <  *const_it) << " | le: " << (*it <= *const_it) << std::endl;
+	std::cerr << "gt: " << (*it >  *const_it) << " | ge: " << (*it >= *const_it) << std::endl;
+	std::cerr << "eq: " << (*it == *reverse_it) << " | ne: " << (*it != *reverse_it) << std::endl;
+	std::cerr << "lt: " << (*it <  *reverse_it) << " | le: " << (*it <= *reverse_it) << std::endl;
+	std::cerr << "gt: " << (*it >  *reverse_it) << " | ge: " << (*it >= *reverse_it) << std::endl;
+}
 
-
-#define COUNT (MAX_RAM / (int)sizeof(Buffer))
-
-template<typename T>
-class MutantStack : public ft::stack<T>
-{
-public:
-	MutantStack() {}
-	MutantStack(const MutantStack<T>& src) { *this = src; }
-	MutantStack<T>& operator=(const MutantStack<T>& rhs) 
+int main( void ){
+	if(!TESTER || TESTER == 1)
 	{
-		this->c = rhs.c;
-		return *this;
+		std::cout << "TESTER 1 : Vector Simple Insert then pop_back\n";
+		NAMESPACE::vector<std::string> vct(1000000, std::string("eh ben dis donc"));
+		NAMESPACE::vector<std::string> vct2;
+
+
+		vct.push_back("One long string");
+		vct2.push_back("Another long string");
+		vct.pop_back();
+		vct2.pop_back();
+
+		for(NAMESPACE::vector<std::string>::iterator it = vct.begin(); it != vct.end() && TESTER; it++)
+			std::cerr << *it;
+		while(!vct.empty())
+			vct.pop_back();
+		for(NAMESPACE::vector<std::string>::iterator it = vct.begin(); it != vct.end(); it++)
+			std::cerr << *it;
+
+		std::cerr << std::endl;
 	}
-	~MutantStack() {}
-
-	typedef typename ft::stack<T>::container_type::iterator iterator;
-
-	iterator begin() { return this->c.begin(); }
-	iterator end() { return this->c.end(); }
-};
-
-int main(int argc, char** argv) {
-	if (argc != 2)
+	if(!TESTER || TESTER == 2)
 	{
-		std::cerr << "Usage: ./test seed" << std::endl;
-		std::cerr << "Provide a seed please" << std::endl;
-		std::cerr << "Count value:" << COUNT << std::endl;
-		return 1;
-	}
-	const int seed = atoi(argv[1]);
-	srand(seed);
+		std::cout << "TESTER 1 : Vector test reverse et const_iterator + operators\n";
+		NAMESPACE::vector<std::string> vct(1000, std::string("eh ben dis donc"));
+		NAMESPACE::vector<std::string> vct2(100, std::string("eh ben"));
+		vct2.insert(--vct2.end(), vct.begin(), vct.end());
+		vct.resize(vct2.size());
 
-	ft::vector<std::string> vector_str;
-	ft::vector<int> vector_int;
-	ft::stack<int> stack_int;
-	ft::vector<Buffer> vector_buffer;
-	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-	ft::map<int, int> map_int;
-
-	for (int i = 0; i < COUNT; i++)
-	{
-		vector_buffer.push_back(Buffer());
-	}
-
-	for (int i = 0; i < COUNT; i++)
-	{
-		const int idx = rand() % COUNT;
-		vector_buffer[idx].idx = 5;
-	}
-	ft::vector<Buffer>().swap(vector_buffer);
-
-	try
-	{
-		for (int i = 0; i < COUNT; i++)
+		while(!vct2.empty())
 		{
-			const int idx = rand() % COUNT;
-			vector_buffer.at(idx);
-			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+			comparator<NAMESPACE::vector<std::string> >(vct2.begin(), vct.begin(), --vct2.rend());
+			vct2.pop_back();
+			vct.pop_back();
 		}
 	}
-	catch(const std::exception& e)
+	if(!TESTER || TESTER == 2)
 	{
-	}
-	
-	for (int i = 0; i < COUNT; ++i)
-	{
-		map_int.insert(ft::make_pair(rand(), rand()));
-	}
+		std::cout << "TESTER 1 : Vector test reverse et const_iterator + operators\n";
+		NAMESPACE::vector<std::string> vct(1000, std::string("eh ben dis donc"));
+		NAMESPACE::vector<std::string> vct2(100, std::string("eh ben"));
+		vct2.insert(--vct2.end(), vct.begin(), vct.end());
+		vct.resize(vct2.size());
 
-	int sum = 0;
-	for (int i = 0; i < 10000; i++)
-	{
-		int access = rand();
-		sum += map_int[access];
+		while(!vct2.empty())
+		{
+			comparator<NAMESPACE::vector<std::string> >(vct2.begin(), vct.begin(), --vct2.rend());
+			vct2.pop_back();
+			vct.pop_back();
+		}
 	}
-	std::cout << "should be constant with the same seed: " << sum << std::endl;
-
-	{
-		ft::map<int, int> copy = map_int;
-	}
-	MutantStack<char> iterable_stack;
-	for (char letter = 'a'; letter <= 'z'; letter++)
-		iterable_stack.push(letter);
-	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
-	{
-		std::cout << *it;
-	}
-	std::cout << std::endl;
 	return (0);
 }

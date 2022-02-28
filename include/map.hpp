@@ -35,7 +35,6 @@ namespace ft
 					return comp(x.first, y.first);
 					}
 			};
-			// typedef _Alloc allocator_type;
 		private:
 				typedef typename ft::node< value_type , Compare> Node;
 				typedef typename ft::tree<Key, T, Compare, _Alloc> Tree;

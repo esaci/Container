@@ -1,8 +1,21 @@
 #!/usr/bin/zsh
-clang++ -Wall -Wextra -Werror -std=c++98 -o ft main.cpp -Iincludes -DFT
-clang++ -Wall -Wextra -Werror -std=c++98 -o std main.cpp -Iincludes
-chmod 755 ft
-chmod 755 std
-./ft > "mine"
-./std > "true"
-diff "true" mine
+make -s fclean && make -s TESTER="1" NAMESPACE="ft"
+echo "Timing for Tester 1, NAMESPACE FT"
+time ./container 2> logft.txt
+echo "\n\n"
+make -s fclean && make -s TESTER="1" NAMESPACE="std"
+echo "Timing for Tester 1, NAMESPACE STD"
+time ./container 2> logstd.txt
+
+diff logft.txt logstd.txt
+echo "\n\n\n\n"
+
+make -s fclean && make -s TESTER="2" NAMESPACE="ft"
+echo "Timing for Tester 2, NAMESPACE FT"
+time ./container 2> logft.txt
+echo "\n\n"
+make -s fclean && make -s TESTER="2" NAMESPACE="std"
+echo "Timing for Tester 2, NAMESPACE STD"
+time ./container 2> logstd.txt
+
+diff logft.txt logstd.txt

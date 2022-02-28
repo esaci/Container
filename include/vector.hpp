@@ -289,7 +289,6 @@
 				}
 
 				iterator insert (iterator position, const value_type& val){
-					// std::cout << " version 1 ------------------------------" << std::endl;
 					if (_n_elem >= max_size())
 						return(end());
 					typename iterator::difference_type pos = position - begin(), oldsize = size();
@@ -338,7 +337,6 @@
 					if (_n_elem >= max_size())
 						return;
 					size_type pos = position - begin(), oldsize = size(), n = 0;
-					// std::cout << " version 3 ------------------------------" << std::endl;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						++n;
 					reserve_private(_n_elem + n);
@@ -351,10 +349,8 @@
 						_alloc.destroy(&at(i));
 						i--;
 					}
-					// std::cout << "seconde etape de la versio 3 atteinte" << std::endl;
 					for(size_type i = 1; i <= n;i++)
 						_alloc.construct(&at(pos + n - i), *(--last));
-					// std::cout << "etape finale de la versio 3 atteinte" << std::endl;
 				}
 			
 				iterator erase(iterator position){

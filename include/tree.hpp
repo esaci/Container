@@ -101,13 +101,10 @@ namespace ft{
 				_n_elem = 0;
 			}
 			void	right_rotation(Node *arg){
-				// return ;
 				if (arg == _nill || arg->left == _nill)
 					return ;
 				Node *new_arg = arg->left;
 
-				if (new_arg == new_arg->_nill)
-					std::cout << "PARDON ?!\n";
 
 				if (arg->before == arg->_nill)
 					_root = new_arg;
@@ -135,9 +132,6 @@ namespace ft{
 				if (arg == _nill || arg->right == _nill)
 					return ;
 				Node *new_arg = arg->right;
-
-				if (new_arg == new_arg->_nill)
-					std::cout << "PARDON ?!\n";
 
 				if (arg->before == arg->_nill)
 					_root = new_arg;
