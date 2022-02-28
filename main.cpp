@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <algorithm>
 
 template <class T>
 void	comparator(typename T::iterator it, typename T::const_iterator const_it, typename T::reverse_iterator reverse_it)
@@ -121,6 +122,13 @@ int main( void ){
 		NAMESPACE::map<int, int>::const_reverse_iterator rcit(rit);
 
 		std::cerr << cit->first << rcit->first << "\n";
+	}
+	if (!TESTER || TESTER == 7){
+		std::cout << std::boolalpha;
+		std::cout << "is_integral:" << std::endl;
+		std::cout << "char: " << NAMESPACE::is_integral<char>::value << std::endl;
+		std::cout << "int: " << NAMESPACE::is_integral<int>::value << std::endl;
+		std::cout << "float: " << NAMESPACE::is_integral<float>::value << std::endl;
 	}
 	return (0);
 }
