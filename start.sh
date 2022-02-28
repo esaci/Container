@@ -61,3 +61,13 @@ echo "Timing for Tester 6, NAMESPACE STD"
 time ./container 2> logstd.txt
 
 diff logft.txt logstd.txt
+
+make -s fclean && make -s TESTER="7" NAMESPACE="ft"
+echo "Timing for Tester 7, NAMESPACE FT"
+time ./container 2> logft.txt
+echo "\n\n"
+make -s fclean && make -s TESTER="7" NAMESPACE="std"
+echo "Timing for Tester 7, NAMESPACE STD"
+time ./container 2> logstd.txt
+
+diff logft.txt logstd.txt

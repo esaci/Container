@@ -2,6 +2,7 @@
 #include "include/map.hpp"
 #include "include/vector.hpp"
 #include "include/stack.hpp"
+#include "include/is_integral.hpp"
 #include <string>
 #include <iostream>
 
@@ -126,9 +127,9 @@ int main( void ){
 	if (!TESTER || TESTER == 7){
 		std::cout << std::boolalpha;
 		std::cout << "is_integral:" << std::endl;
-		std::cout << "char: " << NAMESPACE::is_integral<char>::value << std::endl;
-		std::cout << "int: " << NAMESPACE::is_integral<int>::value << std::endl;
-		std::cout << "float: " << NAMESPACE::is_integral<float>::value << std::endl;
+		std::cout << "char: " << ft::is_integral<char>::value << std::endl;
+		std::cout << "int: " << ft::is_integral<int>::value << std::endl;
+		std::cout << "float: " << ft::is_integral<float>::value << std::endl;
 	}
 	return (0);
 }
