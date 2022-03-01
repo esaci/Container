@@ -142,7 +142,7 @@
 						return (reverse_iterator(&_table[_n_elem]));
 					return (reverse_iterator());
 				}
-				reverse_iterator rbegin( void ) const{
+				const_reverse_iterator rbegin( void ) const{
 					if (_table)
 						return (const_reverse_iterator(&_table[_n_elem]));
 					return (const_reverse_iterator());
@@ -152,7 +152,7 @@
 						return (reverse_iterator(&_table[0]));
 					return (reverse_iterator());
 				}
-				reverse_iterator rend( void ) const{
+				const_reverse_iterator rend( void ) const{
 					if (_table)
 						return (const_reverse_iterator(&_table[0]));
 					return (const_reverse_iterator());
@@ -176,7 +176,7 @@
 					else if (n <= _capacity)
 					{
 						for(; _n_elem < n; _n_elem++)
-							_table[_n_elem] = val;
+							_alloc.construct(_table + _n_elem, val);
 					}
 					else
 					{
