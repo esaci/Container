@@ -45,8 +45,11 @@
 						_capacity = n;
 						if (n <= (2 * _n_elem))
 							_capacity = 2 * _n_elem;
-						_table = _alloc.allocate(_capacity);
-						for (size_type i = 0; i < _n_elem && tmp; i++)
+						if (_capacity)
+							_table = _alloc.allocate(_capacity);
+						else
+							_table = NULL;
+						for (size_type i = 0; i < _n_elem && tmp && i < _capacity; i++)
 							_alloc.construct(_table + i, tmp[i]);
 						for(size_type i = 0; i < _n_elem && tmp; i++)
 							_alloc.destroy(tmp + i);
@@ -98,9 +101,13 @@
 				}
 				~vector( void )
 				{
-					for(size_type i = 0; i < _n_elem; i++)
+					if (!_table)
+						return ;
+					for(size_type i = 0; i < _n_elem && _table; i++)
 						_alloc.destroy(_table + i);
-					_alloc.deallocate(_table, _capacity);
+					if (_table)
+						_alloc.deallocate(_table, _capacity);
+					_n_elem = 0;
 				}
 				vector &operator=(const vector &arg)
 				{
@@ -108,8 +115,6 @@
 					_alloc = arg._alloc;
 					reserve(arg._capacity);
 					_n_elem = arg._n_elem;
-					/* if (!_table)
-						return (*this); */
 					for (size_type i = 0; i < _n_elem; i++)
 						_alloc.construct(_table + i, arg._table[i]);
 					return (*this);
@@ -169,14 +174,16 @@
 				{
 					if (n <= _n_elem)
 					{
-						for(size_type i = n; i < _n_elem; i++)
+						for(size_type i = n; i < _n_elem && _table; i++)
 							_alloc.destroy(&at(i));
 						_n_elem = n;
+						return ;
 					}
 					else if (n <= _capacity)
 					{
 						for(; _n_elem < n; _n_elem++)
 							_alloc.construct(_table + _n_elem, val);
+						return ;
 					}
 					else
 					{
@@ -343,10 +350,10 @@
 					_n_elem += n;
 					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
 					size_type i = oldsize - 1;
-					for(iterator it = end() - 1 - n; it >= (begin() + pos) && oldsize > 0; it--)
+					for(iterator it = end() - 1 - n; it >= (begin() + pos) && oldsize > 0 && i < oldsize; it--)
 					{
 						_alloc.construct(&at(i +  n), at(i));
-						_alloc.destroy(&at(i));
+						_alloc.destroy(_table + i);
 						i--;
 					}
 					for(size_type i = 1; i <= n;i++)
@@ -360,13 +367,14 @@
 						pos++;
 					if (it != position && it == end())
 						return (it);
-					for(; (it + 1) != end(); it++)
+					for(; (it + 1) != end() && _table; it++)
 					{
 						_alloc.destroy(&at(pos));
 						_alloc.construct(&at(pos), at(pos + 1));
 						pos++;
 					}
-					_alloc.destroy(&at(pos));
+					if (_table)
+						_alloc.destroy(&at(pos));
 					--_n_elem;
 					return (position);
 				}
@@ -382,13 +390,13 @@
 					}
 					if (it != first && it == end())
 						return (it);
-					for(; (it + len) != end(); it++)
+					for(; (it + len) != end() && _table; it++)
 					{
 						_alloc.destroy(&at(pos));
 						_alloc.construct(&at(pos), at(pos + len));
 						pos++;
 					}
-					for(; pos < _n_elem; pos++)
+					for(; pos < _n_elem && _table; pos++)
 						_alloc.destroy(&at(pos));
 					_n_elem -= len;
 					return (first);
@@ -413,7 +421,7 @@
 				}
 
 				void clear( void ){
-					for(size_type i = 0; i < _n_elem; i++)
+					for(size_type i = 0; i < _n_elem && _table; i++)
 						_alloc.destroy(_table + i);
 					_n_elem = 0;
 				}
@@ -421,34 +429,6 @@
 				allocator_type get_allocator() const{
 					return (_alloc);
 				}
-				/* void insert (iterator position, size_type n, const value_type& val){
-
-					size_type pos = position - begin(), oldsize = size();
-					value_type *_garb = garb_collector(_n_elem + n);
-					reserve_private(_n_elem + n);
-					_n_elem += n;
-					for(size_type = 0; i < (n - (oldsize - pos)); i++)
-						_alloc.construct(&at(oldsize + i), val);
-					for(size_type = pos; i < oldsize; i++)
-						_alloc.construct(&at(oldsize + i), at(oldsize - 1 - (n - i)));
-					if (oldsize - pos <= n)
-						return ; 
-					for(reverse_iterator it = rbegin() + n, endt = (rend() - pos - n); it < endt; it++)
-					{
-						_alloc.destroy(&at(oldsize));
-						_alloc.construct(&at(oldsize), at(oldsize - n));
-						--oldsize;
-					}
-					for (size_type i = 0; i < n; i++)
-					{
-						_alloc.destroy(&at(oldsize));
-						_alloc.construct(&at(oldsize), val);
-						--oldsize;
-					}
-					return ;
-				} */
-				/* template <class InputIterator>
-				void insert (iterator position, InputIterator first, InputIterator last); */
 		
 	};
 	template <class T, class Allocator>
