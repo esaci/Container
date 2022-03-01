@@ -3,6 +3,7 @@
 #include "include/vector.hpp"
 #include "include/stack.hpp"
 #include "include/is_integral.hpp"
+#include "include/lexicographical_compare.hpp"
 #include <string>
 #include <iostream>
 
@@ -20,6 +21,13 @@ void	comparator(typename T::iterator it, typename T::const_iterator const_it, ty
 	std::cerr << "eq: " << (*it == *reverse_it) << " | ne: " << (*it != *reverse_it) << std::endl;
 	std::cerr << "lt: " << (*it <  *reverse_it) << " | le: " << (*it <= *reverse_it) << std::endl;
 	std::cerr << "gt: " << (*it >  *reverse_it) << " | ge: " << (*it >= *reverse_it) << std::endl;
+}
+
+bool mycomp (char c1, char c2)
+{ return std::tolower(c1)<std::tolower(c2); }
+
+bool mypredicate (int i, int j) {
+  return (i==j);
 }
 
 int main( void ){
@@ -130,6 +138,39 @@ int main( void ){
 		std::cout << "char: " << ft::is_integral<char>::value << std::endl;
 		std::cout << "int: " << ft::is_integral<int>::value << std::endl;
 		std::cout << "float: " << ft::is_integral<float>::value << std::endl;
+	}
+	if (!TESTER || TESTER == 8){
+		char foo[]="Apple";
+		char bar[]="apartment";
+		
+		std::cerr << std::boolalpha;
+		
+		std::cerr << "Comparing foo and bar lexicographically (foo<bar):\n";
+		
+		std::cerr << "Using default comparison (operator<): ";
+		std::cerr << NAMESPACE::lexicographical_compare(foo,foo+5,bar,bar+9);
+		std::cerr << '\n';
+		
+		std::cerr << "Using mycomp as comparison object: ";
+		std::cerr << NAMESPACE::lexicographical_compare(foo,foo+5,bar,bar+9,mycomp);
+		std::cerr << '\n';
+
+		int myints[] = {20,40,60,80,100};               //   myints: 20 40 60 80 100
+		NAMESPACE::vector<int>myvector (myints,myints+5);     // myvector: 20 40 60 80 100
+		
+		// using default comparison:
+		if ( NAMESPACE::equal (myvector.begin(), myvector.end(), myints) )
+			std::cerr << "The contents of both sequences are equal.\n";
+		else
+			std::cerr << "The contents of both sequences differ.\n";
+		
+		myvector[3]=81;                                 // myvector: 20 40 60 81 100
+		
+		// using predicate comparison:
+		if ( NAMESPACE::equal (myvector.begin(), myvector.end(), myints, mypredicate) )
+			std::cerr << "The contents of both sequences are equal.\n";
+		else
+			std::cerr << "The contents of both sequences differ.\n";
 	}
 	return (0);
 }
