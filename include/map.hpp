@@ -55,81 +55,6 @@ namespace ft
 			Compare _comp;
 			_allocator_type	_alloc;
 			Tree	_tree;
-		public:
-			explicit map (const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
-				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){}
-			template <class InputIterator>
-			map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
-				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){
-					for(InputIterator tmp = first; tmp != last; tmp++){
-						_tree.insert(*tmp);
-					}
-				}
-			map (const map& x):
-				_comp(x._comp), _alloc(x._alloc), _tree(x._comp, x._alloc){
-					map::const_iterator it = x.begin();
-					for(; it != x.end(); ++it){
-						_tree.insert((*it));
-					}
-				}
-			map &operator=(const map &x){
-				_comp = x._comp;
-				_alloc = x._alloc;
-				_tree.erase_all_except_nill();
-				const_iterator it = x.begin();
-				for(; it != x.end(); ++it){
-					_tree.insert((*it));
-				}
-				return (*this);
-			}
-		public:
-			iterator begin( void ){
-				return (iterator(_tree.begin()));
-			}
-			const_iterator begin( void ) const{
-				return (const_iterator(_tree.begin()));
-			}
-
-			iterator end( void ){
-				return (iterator(_tree.end()));
-			}
-			const_iterator end( void )const{
-				return(const_iterator(_tree.end()));
-			}
-
-			reverse_iterator rbegin( void ){
-				return (reverse_iterator(_tree.end()));
-			}
-			const_reverse_iterator rbegin( void ) const{
-				return (const_reverse_iterator(_tree.end()));
-			}
-
-			reverse_iterator rend( void ){
-				return (reverse_iterator(_tree.begin()));
-			}
-			const_reverse_iterator rend( void ) const{
-				return (const_reverse_iterator(_tree.begin()));
-			}
-
-			bool	empty( void )const{
-				if(_tree._n_elem)
-					return (0);
-				return (1);
-			}
-
-			size_type	size( void ) const{
-				return (_tree._n_elem);
-			}
-
-			size_type	max_size( void ) const{
-				return (_alloc.max_size());
-			}
-
-			mapped_type	&operator[](const key_type &k){
-				iterator it = iterator(_tree.insert(value_type(k, T())));
-				return ((*it).second);
-			}
-		private:
 			bool	_find(const Key &arg) const{
 				const_iterator it = begin();
 				for(; it != end(); ++it)
@@ -139,24 +64,6 @@ namespace ft
 				}
 				return (true);
 			}
-		public:
-			ft::pair<iterator,bool> insert (const value_type& val){
-				if (_tree._n_elem >= max_size())
-						return(ft::pair<iterator,bool>(end(),false));
-				return(_tree.insert_bool(val));
-			}
-			iterator insert (iterator position, const value_type& val){
-				if (_tree._n_elem >= max_size())
-						return(end());
-				(void)position;
-				return(iterator(_tree.insert(val)));
-			}
-			template <class InputIterator>
-			void insert (InputIterator first, InputIterator last){
-				for(; first != last && _tree._n_elem < max_size(); first++)
-					_tree.insert(*first);
-			}
-		private:
 			void	change_nill(Node *arg){
 				iterator it(arg);
 				if (arg == _tree._nill->left)
@@ -221,6 +128,94 @@ namespace ft
 				return (true);
 			}
 		public:
+			explicit map (const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
+				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){}
+			template <class InputIterator>
+			map (InputIterator first, typename ft::enable_if<is_iterator<InputIterator>::value && is_input_iterator<InputIterator>::value ,InputIterator>::type last, const key_compare& comp = key_compare(), const _allocator_type& alloc = allocator_type()):
+				_comp(comp), _alloc(alloc), _tree(_comp, _alloc){
+					for(InputIterator tmp = first; tmp != last; tmp++){
+						_tree.insert(*tmp);
+					}
+				}
+			map (const map& x):
+				_comp(x._comp), _alloc(x._alloc), _tree(x._comp, x._alloc){
+					map::const_iterator it = x.begin();
+					for(; it != x.end(); ++it){
+						_tree.insert((*it));
+					}
+				}
+			map &operator=(const map &x){
+				_comp = x._comp;
+				_alloc = x._alloc;
+				_tree.erase_all_except_nill();
+				const_iterator it = x.begin();
+				for(; it != x.end(); ++it){
+					_tree.insert((*it));
+				}
+				return (*this);
+			}
+			iterator begin( void ){
+				return (iterator(_tree.begin()));
+			}
+			const_iterator begin( void ) const{
+				return (const_iterator(_tree.begin()));
+			}
+
+			iterator end( void ){
+				return (iterator(_tree.end()));
+			}
+			const_iterator end( void )const{
+				return(const_iterator(_tree.end()));
+			}
+
+			reverse_iterator rbegin( void ){
+				return (reverse_iterator(_tree.end()));
+			}
+			const_reverse_iterator rbegin( void ) const{
+				return (const_reverse_iterator(_tree.end()));
+			}
+
+			reverse_iterator rend( void ){
+				return (reverse_iterator(_tree.begin()));
+			}
+			const_reverse_iterator rend( void ) const{
+				return (const_reverse_iterator(_tree.begin()));
+			}
+
+			bool	empty( void )const{
+				if(_tree._n_elem)
+					return (0);
+				return (1);
+			}
+
+			size_type	size( void ) const{
+				return (_tree._n_elem);
+			}
+
+			size_type	max_size( void ) const{
+				return (_alloc.max_size());
+			}
+
+			mapped_type	&operator[](const key_type &k){
+				iterator it = iterator(_tree.insert(value_type(k, T())));
+				return ((*it).second);
+			}
+			ft::pair<iterator,bool> insert (const value_type& val){
+				if (_tree._n_elem >= max_size())
+						return(ft::pair<iterator,bool>(end(),false));
+				return(_tree.insert_bool(val));
+			}
+			iterator insert (iterator position, const value_type& val){
+				if (_tree._n_elem >= max_size())
+						return(end());
+				(void)position;
+				return(iterator(_tree.insert(val)));
+			}
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last){
+				for(; first != last && _tree._n_elem < max_size(); first++)
+					_tree.insert(*first);
+			}
 			void erase (typename ft::enable_if<is_iterator<iterator>::value && is_input_iterator<iterator>::value ,iterator>::type position){
 				Node *tmp = position.base();
 

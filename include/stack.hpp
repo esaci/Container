@@ -23,27 +23,21 @@
 			const value_type& top() const { return c.back(); }
 			void push(const value_type& x) { c.push_back(x); }
 			void pop() { c.pop_back(); }
-			// template <class T, class Container>
 			friend bool operator==(const stack<T, Container>& x, const stack<T, Container>& y){
 				return (x.c == y.c);
 			}
-			// template <class T, class Container>
 			friend bool operator< (const stack<T, Container>& x, const stack<T, Container>& y){
 				return (x.c < y.c);
 			}
-			// template <class T, class Container>
 			friend bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y){
 				return (x.c != y.c);
 			}
-			// template <class T, class Container>
 			friend bool operator> (const stack<T, Container>& x,const stack<T, Container>& y){
 				return (x.c > y.c);
 			}
-			// template <class T, class Container>
 			friend bool operator>=(const stack<T, Container>& x, const stack<T, Container>& y){
 				return (x.c >= y.c);
 			}
-			// template <class T, class Container>
 			friend bool operator<=(const stack<T, Container>& x, const stack<T, Container>& y){
 				return (x.c <= y.c);
 			}
