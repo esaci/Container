@@ -346,6 +346,8 @@
 					size_type pos = position - begin(), oldsize = size(), n = 0;
 					for(InputIterator tmp = first; tmp != last; tmp++)
 						++n;
+					if (!n)
+						return ;
 					reserve_private(_n_elem + n);
 					_n_elem += n;
 					/* for(size_type i = oldsize - 1; i >= pos && oldsize > 0; i--) */
@@ -388,6 +390,8 @@
 							return (it);
 						pos++;
 					}
+					if (!pos)
+						return(first);
 					if (it != first && it == end())
 						return (it);
 					for(; (it + len) != end() && _table; it++)
